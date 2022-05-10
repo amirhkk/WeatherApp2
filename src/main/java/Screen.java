@@ -31,6 +31,10 @@ public class Screen {
         frame.setVisible(true);
     }
 
+    public void setInvisible() {
+        frame.setVisible(false);
+    }
+
     public int getWidth() {
         return width;
     }
