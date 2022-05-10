@@ -28,24 +28,15 @@ public class APIfetcher {
 
             String dataAsString = new BufferedReader(new InputStreamReader(url.openStream())).lines().collect(Collectors.joining("\n"));
 
-            JsonObject dataAsJson = JsonParser.parseString(dataAsString).getAsJsonObject();
-            this.json = dataAsJson;
+            this.json = JsonParser.parseString(dataAsString).getAsJsonObject();
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private static void update(){
-        APIfetcher newData = new APIfetcher();
-
-        if (!(newData == null)) {
-            currentData = newData;
-        }
+        currentData = new APIfetcher();
     }
 
     public static String getCurrentActualTemp(){
