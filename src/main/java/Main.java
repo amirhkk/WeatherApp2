@@ -5,6 +5,7 @@ public class Main {
                 .color(204, 166, 166)
                 .title("Weather App")
                 .build();
+        screen.addImage("Path/To/Your/image.png");
         screen.setVisible();
     }
 }
