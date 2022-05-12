@@ -5,8 +5,7 @@ public class Main {
     public static void main(String[] args) throws MalformedURLException {
         MainScreen mainScreen = new MainScreen();
         mainScreen.setVisible(true);
-        Setting setting = new Setting();
-        setting.setVisible(true);
+        
         /*Screen screen = new Screen.ScreenBuilder()
                 .size(450, 700)
                 .color(204, 166, 166)
