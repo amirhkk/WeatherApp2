@@ -3,7 +3,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainScreen extends JFrame {
-    private JPanel panel1;
+    private JPanel panel;
     private JButton settingsButton;
     private JSlider slider1;
     private JLabel warningLabel;
@@ -21,5 +21,9 @@ public class MainScreen extends JFrame {
             e.printStackTrace();
         }
         weatherIconLabel.setIcon(weatherIcon);
+
+        panel.add(weatherIconLabel);
+        add(panel);
+        validate();
     }
 }
