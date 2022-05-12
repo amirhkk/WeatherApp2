@@ -6,6 +6,6 @@ public class MainScreen extends JFrame {
     private JSlider slider1;
 
     public MainScreen() {
-        panel1.setSize(450, 700);
+        setSize(450, 700);
     }
 }
