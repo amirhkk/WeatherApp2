@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -17,6 +18,9 @@ public class MainScreen extends JFrame {
         setSize(450, 700);
         try {
             weatherIcon = new ImageIcon(new URL("https://cdn-icons-png.flaticon.com/512/4052/4052984.png"));
+            Image image = weatherIcon.getImage(); // transform it
+            Image newimg = image.getScaledInstance(150, 150,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+            weatherIcon = new ImageIcon(newimg);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
