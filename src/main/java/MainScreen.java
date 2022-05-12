@@ -22,8 +22,6 @@ public class MainScreen extends JFrame {
         }
         weatherIconLabel.setIcon(weatherIcon);
 
-        panel.add(weatherIconLabel);
         add(panel);
-        validate();
     }
 }
