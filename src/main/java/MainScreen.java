@@ -7,11 +7,11 @@ public class MainScreen extends JFrame {
     private JPanel panel;
     private JButton settingsButton;
     private JSlider dateSlider;
-    private JLabel warningLabel;
     private JLabel actualTempLabel;
     private JLabel feltTempLabel;
     private JLabel weatherIconLabel;
     private JLabel dateLabel;
+    private JButton warningButton;
     private ImageIcon weatherIcon;
 
     public MainScreen() {
