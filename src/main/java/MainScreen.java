@@ -13,18 +13,18 @@ public class MainScreen extends JFrame {
     private JLabel dateLabel;
     private JButton warningButton;
     private ImageIcon weatherIcon;
+    private ImageIcon warningIcon;
 
     public MainScreen() {
         setSize(450, 700);
-        try {
-            weatherIcon = new ImageIcon(new URL("https://cdn-icons-png.flaticon.com/512/4052/4052984.png"));
-            Image image = weatherIcon.getImage(); // transform it
-            Image newimg = image.getScaledInstance(150, 150,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-            weatherIcon = new ImageIcon(newimg);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+
+        weatherIcon = new ImageIcon("src/main/java/Icons/SunCloudy.png");
+        weatherIcon = new ImageIcon(weatherIcon.getImage().getScaledInstance(150, 150,  java.awt.Image.SCALE_SMOOTH));
         weatherIconLabel.setIcon(weatherIcon);
+
+        warningIcon = new ImageIcon("src/main/java/Icons/Warning.png");
+        warningIcon = new ImageIcon(warningIcon.getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
+        warningButton.setIcon(warningIcon);
 
         String actualTemp = APIfetcher.getCurrentActualTemp();
         String feltTemp = APIfetcher.getCurrentFeltTemp();

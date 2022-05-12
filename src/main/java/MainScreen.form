@@ -67,7 +67,7 @@
         </constraints>
         <properties>
           <foreground color="-65536"/>
-          <text value="Warning"/>
+          <text value="Warning!"/>
         </properties>
       </component>
     </children>
