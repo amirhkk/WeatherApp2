@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.net.URL;
 
 /**
  * Implements a screen for the weather app.
@@ -35,7 +36,7 @@ public class Screen {
      * Adds an image to the screen frame.
      * @param path address of the image.
      */
-    public void addImage(String path) {
+    public void addImage(URL path) {
         frame.add(new JLabel(new ImageIcon(path)));
     }
 
