@@ -5,7 +5,7 @@ import java.net.URL;
 public class MainScreen extends JFrame {
     private JPanel panel;
     private JButton settingsButton;
-    private JSlider slider1;
+    private JSlider dateSlider;
     private JLabel warningLabel;
     private JLabel actualTempLabel;
     private JLabel feltTempLabel;
