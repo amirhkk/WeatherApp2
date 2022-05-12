@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class MainScreen {
+public class MainScreen extends JFrame {
     private JPanel panel1;
     private JButton settingsButton;
     private JSlider slider1;
