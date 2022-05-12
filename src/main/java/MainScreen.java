@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MainScreen extends JFrame {
     private JPanel panel;
@@ -30,6 +32,22 @@ public class MainScreen extends JFrame {
         String feltTemp = APIfetcher.getCurrentFeltTemp();
         actualTempLabel.setText(actualTemp);
         feltTempLabel.setText(feltTemp);
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
+        DateTimeFormatter dtfDaily = DateTimeFormatter.ofPattern("MM/dd");
+        dateLabel.setText(dtfHourly.format(now));
+
+        dateSlider.addChangeListener(e -> {
+            int value = dateSlider.getValue();
+            LocalDateTime currentTime = LocalDateTime.now();
+            if (value < 48) {
+                dateLabel.setText(dtfHourly.format(currentTime.plusHours(value)));
+            } else {
+                dateLabel.setText(dtfDaily.format(currentTime.plusDays(value - 46)));
+            }
+        });
+
 
         add(panel);
     }
