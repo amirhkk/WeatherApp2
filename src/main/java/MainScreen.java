@@ -22,6 +22,11 @@ public class MainScreen extends JFrame {
         }
         weatherIconLabel.setIcon(weatherIcon);
 
+        String actualTemp = APIfetcher.getCurrentActualTemp();
+        String feltTemp = APIfetcher.getCurrentFeltTemp();
+        actualTempLabel.setText(actualTemp);
+        feltTempLabel.setText(feltTemp);
+
         add(panel);
     }
 }
