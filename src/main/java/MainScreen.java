@@ -30,8 +30,8 @@ public class MainScreen extends JFrame {
 
         String actualTemp = APIfetcher.getCurrentActualTemp();
         String feltTemp = APIfetcher.getCurrentFeltTemp();
-        actualTempLabel.setText(actualTemp);
-        feltTempLabel.setText(feltTemp);
+        actualTempLabel.setText(actualTemp + "°C");
+        feltTempLabel.setText(feltTemp + "°C");
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
