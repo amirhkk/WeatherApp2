@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 
 public class Settings {
@@ -45,4 +46,28 @@ public class Settings {
         Settings settings = new Settings(frame);
 
     }
+
+    private static JToggleButton createToggleButton() {
+        JToggleButton toggleButton = new JToggleButton("ON");
+        toggleButton.setForeground(Color.BLUE);
+
+        toggleButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (toggleButton.isSelected()) {
+                    toggleButton.setText("OFF");
+                    toggleButton.setForeground(Color.BLACK);
+                }
+                else {
+                    toggleButton.setText("ON");
+                    toggleButton.setForeground(Color.BLUE);
+                }
+            }
+        });
+
+        toggleButton.setSize(15, 15);
+
+        return toggleButton;
+    }
+
 }
