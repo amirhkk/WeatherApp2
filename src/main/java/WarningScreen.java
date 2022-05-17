@@ -9,17 +9,9 @@ public class WarningScreen extends JFrame {
     private JButton exitButton;
     private JPanel warningPanel;
 
-    public WarningScreen() {
+    public WarningScreen(RootScreen parent) {
         warningTextArea.setText("Placeholder Warning");
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JPanel rootPanel = (JPanel) warningPanel.getParent().getParent();
-                CardLayout layout = (CardLayout) rootPanel.getLayout();
-                layout.show(rootPanel, "mainPanel");
-            }
-        });
-        add(warningPanel);
+        exitButton.addActionListener(e -> parent.goMain());
     }
 
     public JPanel getPanel() {

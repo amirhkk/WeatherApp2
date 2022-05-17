@@ -19,7 +19,7 @@ public class MainScreen extends JFrame {
     private DateTimeFormatter dtfHourly;
     private DateTimeFormatter dtfDaily;
 
-    public MainScreen() {
+    public MainScreen(RootScreen parent) {
         setSize(450, 700);
 
         ImageIcon weatherIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/" + APIfetcher.getCurrentIcon()  + ".png")
@@ -40,18 +40,7 @@ public class MainScreen extends JFrame {
         dateLabel.setText(dtfHourly.format(now));
         dateSlider.addChangeListener(e -> dataSliderListener());
 
-        warningButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JButton button = (JButton) e.getSource();
-                JPanel rootPanel = (JPanel) button.getParent();
-                CardLayout layout = (CardLayout) rootPanel.getLayout();
-                layout.show(rootPanel, "warningPanel");
-            }
-        });
-
-
-        add(mainPanel);
+        warningButton.addActionListener(e -> parent.goWarning());
     }
 
     private void dataSliderListener() {

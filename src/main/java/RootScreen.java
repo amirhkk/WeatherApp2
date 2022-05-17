@@ -1,37 +1,30 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class RootScreen extends JFrame{
     private JPanel rootPanel;
-
-    private MainScreen mainScreen;
-    private WarningScreen warningScreen;
-
-    private JPanel mainPanel;
-    private JPanel warningPanel;
-
-    CardLayout layout = (CardLayout) rootPanel.getLayout();
+    CardLayout layout;
 
     public RootScreen() {
         setSize(450, 700);
+        layout = (CardLayout) rootPanel.getLayout();
+        rootPanel.add("mainPanel", new MainScreen(this).getPanel());
+        rootPanel.add("warningPanel", new WarningScreen(this).getPanel());
         layout.show(rootPanel, "mainPanel");
-
-        mainScreen = new MainScreen();
-        mainPanel = mainScreen.getPanel();
-
-        warningScreen = new WarningScreen();
-        warningPanel = warningScreen.getPanel();
-
-        add(warningPanel);
-        add(mainPanel);
+        add(rootPanel);
     }
 
-    private void warningButtonListener() {
+    public void goMain() {
+        layout.show(rootPanel, "mainPanel");
+    }
+
+    public void goWarning() {
         layout.show(rootPanel, "warningPanel");
     }
 
-    public static void main(String[] args) {
-        RootScreen rootScreen = new RootScreen();
-        rootScreen.setVisible(true);
+    public JPanel getPanel() {
+        return rootPanel;
     }
 }
