@@ -1,12 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class MainScreen extends JFrame {
-    private JPanel panel;
+    private JPanel mainPanel;
     private JButton settingsButton;
     private JSlider dateSlider;
     private JLabel actualTempLabel;
@@ -19,10 +19,10 @@ public class MainScreen extends JFrame {
     private DateTimeFormatter dtfHourly;
     private DateTimeFormatter dtfDaily;
 
-    public MainScreen() {
+    public MainScreen(RootScreen parent) {
         setSize(450, 700);
 
-        ImageIcon weatherIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/02d.png")
+        ImageIcon weatherIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/" + APIfetcher.getCurrentIcon()  + ".png")
                 .getImage().getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
         weatherIconLabel.setIcon(weatherIcon);
 
@@ -30,8 +30,8 @@ public class MainScreen extends JFrame {
                 .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
         warningButton.setIcon(warningIcon);
 
-        actualTempLabel.setText(APIfetcher.getCurrentActualTemp() + "°C");
-        feltTempLabel.setText(APIfetcher.getCurrentFeltTemp() + "°C");
+        actualTempLabel.setText(actualTemp(true));
+        feltTempLabel.setText(feltTemp(true));
 
         this.now = LocalDateTime.now();
         this.dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
@@ -40,8 +40,7 @@ public class MainScreen extends JFrame {
         dateLabel.setText(dtfHourly.format(now));
         dateSlider.addChangeListener(e -> dataSliderListener());
 
-
-        add(panel);
+        warningButton.addActionListener(e -> parent.goWarning());
     }
 
     private void dataSliderListener() {
@@ -52,5 +51,33 @@ public class MainScreen extends JFrame {
         } else {
             dateLabel.setText(dtfDaily.format(currentTime.plusDays(value - 46)));
         }
+    }
+
+    private String actualTemp(boolean isCelsius) {
+        double actualTemp = APIfetcher.getCurrentActualTemp();
+        String unit = "°C";
+        if (!isCelsius) {
+            actualTemp = actualTemp * 9. / 5. + 32;
+            unit = "°F";
+        }
+        return Double.toString(Math.round(actualTemp)) + unit;
+    }
+
+    private String feltTemp(boolean isCelsius) {
+        double feltTemp = APIfetcher.getCurrentFeltTemp();
+        String unit = "°C";
+        if (!isCelsius) {
+            feltTemp = feltTemp * 9. / 5. + 32;
+            unit = "°F";
+        }
+        return Double.toString(Math.round(feltTemp)) + unit;
+    }
+
+    public JPanel getPanel() {
+        return mainPanel;
+    }
+
+    public JButton getWarningButton() {
+        return warningButton;
     }
 }

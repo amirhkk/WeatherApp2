@@ -17,6 +17,16 @@ public class Setting extends JFrame {
     private JCheckBox rainCheckBox;
     private JCheckBox stormCheckBox;
     private JPanel panel;
+    private JTextField minTempText;
+    private JTextField maxTempText;
+    private JToggleButton precButton;
+    private JToggleButton tempButton;
+    private JPanel tempPanel;
+    private JPanel precPanel;
+    private JTextField maxPrecText;
+    private JToggleButton rainButton;
+    private JPanel rainPanel;
+    private JTextField rainTimeText;
 
     final private int CELSIUS = 0;
     final private int FAHRENHEIT = 1;
@@ -46,7 +56,6 @@ public class Setting extends JFrame {
 
     public Setting() {
         setSize(450, 700);
-        add(panel);
 
         tempCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -76,6 +85,43 @@ public class Setting extends JFrame {
             }
         });
 
+        tempButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(tempButton.isSelected()) {
+                    tempPanel.setVisible(true);
+                } else {
+                    tempPanel.setVisible(false);
+                }
+
+            }
+        });
+        precButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(precButton.isSelected()) {
+                    precPanel.setVisible(true);
+                } else {
+                    precPanel.setVisible(false);
+                }
+            }
+        });
+
+        rainButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(rainButton.isSelected()) {
+                    rainPanel.setVisible(true);
+                } else {
+                    rainPanel.setVisible(false);
+                }
+            }
+        });
+
+        tempPanel.setVisible(false);
+        precPanel.setVisible(false);
+        rainPanel.setVisible(false);
+        add(panel);
     }
 
     private boolean allSettingsSyncedWithUI() {

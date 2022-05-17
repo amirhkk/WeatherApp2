@@ -42,14 +42,14 @@ public class APIfetcher {
         currentData = new APIfetcher();
     }
 
-    public static String getCurrentActualTemp(){
+    public static Double getCurrentActualTemp(){
         APIfetcher.update();
-        return Double.toString(Double.parseDouble(currentData.json.getAsJsonObject("current").get("temp").getAsString()) - 273.15);
+        return Double.parseDouble(currentData.json.getAsJsonObject("current").get("temp").getAsString()) - 273.15;
     }
 
-    public static String getCurrentFeltTemp(){
+    public static Double getCurrentFeltTemp(){
         APIfetcher.update();
-        return Double.toString(Double.parseDouble(currentData.json.getAsJsonObject("current").get("feels_like").getAsString()) - 273.15);
+        return Double.parseDouble(currentData.json.getAsJsonObject("current").get("feels_like").getAsString()) - 273.15;
     }
 
     public static Map<String, String> getHourlyAt(String hour){
@@ -81,6 +81,29 @@ public class APIfetcher {
         return date;
     }
 
+    private static Map<String, Double> getTempAtTime(int hour){
+       APIfetcher.update();
+       Double actual =  Double.parseDouble(currentData.json.getAsJsonArray("hourly").get(hour).getAsJsonObject().get("temp").getAsString());
+       Double felt =  Double.parseDouble(currentData.json.getAsJsonArray("hourly").get(hour).getAsJsonObject().get("feels_like").getAsString());
+       Map<String, Double> result = new HashMap<>();
+
+       result.put("Actual", actual);
+       result.put("feels", felt);
+       return result;
+    }
+
+    private static Map<String, Double> getTempAtDay(int day){
+        APIfetcher.update();
+        Double actual = Double.parseDouble(currentData.json.getAsJsonArray("daily").get(day).getAsJsonObject().getAsJsonObject("temp").get("day").getAsString());
+        Double felt = Double.parseDouble(currentData.json.getAsJsonArray("daily").get(day).getAsJsonObject().getAsJsonObject("feels_like").get("day").getAsString());
+
+        Map<String, Double> result = new HashMap<>();
+
+        result.put("Actual", actual);
+        result.put("felt", felt);
+
+        return result;
+    }
     //public static Date fromUnixTODate(){}
 
 
@@ -91,24 +114,30 @@ public class APIfetcher {
     // 0 current
     // 1-47: next two days hourly (always full hour, so like 1pm, 2pm etc.)
     // 48-52: next week daily? (excluding next 48 hrs) (always give the temperature for day time!)
-   // public static Map<String, String> getForecast(int timeIndex) {
-   //     // TODO: make custom checked exception for the hour issues
-   //     if (timeIndex < 0) {
-   //         throw new RuntimeException("don't do historical data");
-   //     }
+    public static Map<String, Double> getForecast(int timeIndex) {  // need to fetch the icon aswell
+        // TODO: make custom checked exception for the hour issues
+        Map<String, Double> result = new HashMap<>();
+        if (timeIndex < 0 || timeIndex > 52) {
+            throw new RuntimeException("we do not provide data for this time");
+        }
 
-   //     if (timeIndex == 0) {
-   //         // current and return
-   //     }
-   //     if (timeIndex <= 47) {
-   //         // next 48 hrs, 0 for getting index, return
-   //     }
-   //     if (timeIndex <= 52) {
-   //         // next week daily,
+        else if (timeIndex == 0) {
+            // current and return
+            result.put("Actual", getCurrentActualTemp());
+            result.put("Felt", getCurrentFeltTemp());
 
-   //     }
+            return result;
+        }
+        else if (timeIndex <= 47) {
+            // next 48 hrs, 0 for getting index, return
+            return getTempAtTime(timeIndex - 1);
 
+        }
+        else { //timeIndex <= 52)
 
-   // }
+            return getTempAtDay(timeIndex - 48);
+        }
+
+    }
 }
 
