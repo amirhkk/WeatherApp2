@@ -22,7 +22,7 @@ public class MainScreen extends JFrame {
     public MainScreen() {
         setSize(450, 700);
 
-        ImageIcon weatherIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/" + APIfetcher.getCurrentIcon() + ".png")
+        ImageIcon weatherIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/" + APIfetcher.getCurrentIcon()  + ".png")
                 .getImage().getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
         weatherIconLabel.setIcon(weatherIcon);
 
