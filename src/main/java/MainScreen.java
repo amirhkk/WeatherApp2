@@ -15,6 +15,10 @@ public class MainScreen extends JFrame {
     private JLabel dateLabel;
     private JButton warningButton;
 
+    private LocalDateTime now;
+    private DateTimeFormatter dtfHourly;
+    private DateTimeFormatter dtfDaily;
+
     public MainScreen() {
         setSize(450, 700);
 
@@ -26,27 +30,27 @@ public class MainScreen extends JFrame {
                 .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
         warningButton.setIcon(warningIcon);
 
-        String actualTemp = APIfetcher.getCurrentActualTemp();
-        String feltTemp = APIfetcher.getCurrentFeltTemp();
-        actualTempLabel.setText(actualTemp + "°C");
-        feltTempLabel.setText(feltTemp + "°C");
+        actualTempLabel.setText(APIfetcher.getCurrentActualTemp() + "°C");
+        feltTempLabel.setText(APIfetcher.getCurrentFeltTemp() + "°C");
 
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
-        DateTimeFormatter dtfDaily = DateTimeFormatter.ofPattern("MM/dd");
+        this.now = LocalDateTime.now();
+        this.dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
+        this.dtfDaily = DateTimeFormatter.ofPattern("MM/dd");
+
         dateLabel.setText(dtfHourly.format(now));
-
-        dateSlider.addChangeListener(e -> {
-            int value = dateSlider.getValue();
-            LocalDateTime currentTime = LocalDateTime.now();
-            if (value < 48) {
-                dateLabel.setText(dtfHourly.format(currentTime.plusHours(value)));
-            } else {
-                dateLabel.setText(dtfDaily.format(currentTime.plusDays(value - 46)));
-            }
-        });
+        dateSlider.addChangeListener(e -> dataSliderListener());
 
 
         add(panel);
+    }
+
+    private void dataSliderListener() {
+        int value = dateSlider.getValue();
+        LocalDateTime currentTime = LocalDateTime.now();
+        if (value < 48) {
+            dateLabel.setText(dtfHourly.format(currentTime.plusHours(value)));
+        } else {
+            dateLabel.setText(dtfDaily.format(currentTime.plusDays(value - 46)));
+        }
     }
 }
