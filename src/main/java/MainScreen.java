@@ -1,7 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -40,6 +37,7 @@ public class MainScreen extends JFrame {
         dateLabel.setText(dtfHourly.format(now));
         dateSlider.addChangeListener(e -> dataSliderListener());
 
+        settingsButton.addActionListener(e -> parent.goSetting());
         warningButton.addActionListener(e -> parent.goWarning());
     }
 
@@ -73,11 +71,7 @@ public class MainScreen extends JFrame {
         return Double.toString(Math.round(feltTemp)) + unit;
     }
 
-    public JPanel getPanel() {
+    public JPanel getMainPanel() {
         return mainPanel;
-    }
-
-    public JButton getWarningButton() {
-        return warningButton;
     }
 }
