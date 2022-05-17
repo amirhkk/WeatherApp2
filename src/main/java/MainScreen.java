@@ -55,7 +55,7 @@ public class MainScreen extends JFrame {
     }
 
     private String actualTemp(boolean isCelsius) {
-        double actualTemp = Double.parseDouble(APIfetcher.getCurrentActualTemp());
+        double actualTemp = APIfetcher.getCurrentActualTemp();
         String unit = "°C";
         if (!isCelsius) {
             actualTemp = actualTemp * 9. / 5. + 32;
@@ -65,7 +65,7 @@ public class MainScreen extends JFrame {
     }
 
     private String feltTemp(boolean isCelsius) {
-        double feltTemp = Double.parseDouble(APIfetcher.getCurrentFeltTemp());
+        double feltTemp = APIfetcher.getCurrentFeltTemp();
         String unit = "°C";
         if (!isCelsius) {
             feltTemp = feltTemp * 9. / 5. + 32;
