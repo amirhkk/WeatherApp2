@@ -118,12 +118,12 @@ public class Setting extends JFrame {
     }
 
     private void setNewExtremePrecipitation(int precipitation) {
-        // TODO: Check is valid input
+        // TODO: Check is valid input in label event
         this.extremePrecipitation = precipitation;
     }
 
     private void setNewImminentRain(int time) {
-        // TODO: Check is valid input
+        // TODO: Check is valid input in label event
         this.imminentRainTime = time;
     }
 
@@ -158,6 +158,14 @@ public class Setting extends JFrame {
             throw new IllegalArgumentException("Invalid temperature display setting " + settingID);
         }
     }
+
+    public int getTemperatureUnits() {
+        return this.temperatureUnits;
+    }
+
+    public int getDisplayTemperatureTypes() {
+        return this.displayTemperatureTypes;
+    }
 }
 
 
@@ -165,43 +173,3 @@ public class Setting extends JFrame {
 
 
 
-
-//    public static JFrame openWindow() {
-//        JFrame frame = new JFrame();
-//        frame.setSize(450,700);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.getContentPane().setBackground(new java.awt.Color(204, 166, 166));
-//        frame.add(new JLabel(new ImageIcon("Path/To/Your/Image.png")));
-//        frame.setTitle("WeatherApp");
-//        frame.setVisible(true);
-//        return frame;
-//    }
-//
-//    public static void main(String[] args) {
-//        JFrame frame = openWindow();
-//        Settings settings = new Settings(frame);
-//
-//    }
-//
-//    private static JToggleButton createToggleButton() {
-//        JToggleButton toggleButton = new JToggleButton("ON");
-//        toggleButton.setForeground(Color.BLUE);
-//
-//        toggleButton.addItemListener(new ItemListener() {
-//            @Override
-//            public void itemStateChanged(ItemEvent e) {
-//                if (toggleButton.isSelected()) {
-//                    toggleButton.setText("OFF");
-//                    toggleButton.setForeground(Color.BLACK);
-//                } else {
-//                    toggleButton.setText("ON");
-//                    toggleButton.setForeground(Color.BLUE);
-//                }
-//            }
-//        });
-//
-//        toggleButton.setSize(15, 15);
-//
-//        return toggleButton;
-//    }
-//}
