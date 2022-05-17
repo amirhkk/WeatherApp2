@@ -23,11 +23,11 @@ public class MainScreen extends JFrame {
         setSize(450, 700);
 
         ImageIcon weatherIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/" + APIfetcher.getCurrentIcon()  + ".png")
-                .getImage().getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
+                .getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
         weatherIconLabel.setIcon(weatherIcon);
 
         ImageIcon warningIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/Warning.png")
-                .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
+                .getImage().getScaledInstance(40, 40,  Image.SCALE_SMOOTH));
         warningButton.setIcon(warningIcon);
 
         actualTempLabel.setText(actualTemp(true));
@@ -39,6 +39,9 @@ public class MainScreen extends JFrame {
 
         dateLabel.setText(dtfHourly.format(now));
         dateSlider.addChangeListener(e -> dataSliderListener());
+
+        // Set the background
+
 
         add(panel);
     }
