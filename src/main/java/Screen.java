@@ -5,6 +5,13 @@ import java.net.URL;
  * Implements a screen for the weather app.
  */
 public class Screen {
+    final private int CELSIUS = 0;
+    final private int FAHRENHEIT = 1;
+
+    final private int ACTUAL_TEMPERATURE = 0;
+    final private int FELT_TEMPERATURE = 1;
+    final private int BOTH_TEMPERATURES = 2;
+
     private final int width;
     private final int length;
     private final int red;
