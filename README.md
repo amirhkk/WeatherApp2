@@ -8,7 +8,7 @@ Maven: com.google.gson:gson:2.9.0
 
 ### Choice of tools  
 - we use https://openweathermap.org/api a free api providing us with all the required data
-- we read the api data and store as a JSON object using google's GSON library 
+- we read the api data and store as a JSON object using google's GSON library (this needs to be installed as an external library) 
 - this JSON object can then easily be queried by specifying the relevant fields 
 
 ### Our implementation 
