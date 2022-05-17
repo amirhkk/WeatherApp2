@@ -1,12 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class MainScreen extends JFrame {
-    private JPanel panel;
+    private JPanel mainPanel;
     private JButton settingsButton;
     private JSlider dateSlider;
     private JLabel actualTempLabel;
@@ -40,7 +40,18 @@ public class MainScreen extends JFrame {
         dateLabel.setText(dtfHourly.format(now));
         dateSlider.addChangeListener(e -> dataSliderListener());
 
-        add(panel);
+        warningButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JButton button = (JButton) e.getSource();
+                JPanel rootPanel = (JPanel) button.getParent();
+                CardLayout layout = (CardLayout) rootPanel.getLayout();
+                layout.show(rootPanel, "warningPanel");
+            }
+        });
+
+
+        add(mainPanel);
     }
 
     private void dataSliderListener() {
@@ -73,4 +84,11 @@ public class MainScreen extends JFrame {
         return Double.toString(Math.round(feltTemp)) + unit;
     }
 
+    public JPanel getPanel() {
+        return mainPanel;
+    }
+
+    public JButton getWarningButton() {
+        return warningButton;
+    }
 }
