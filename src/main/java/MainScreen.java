@@ -40,7 +40,6 @@ public class MainScreen extends JFrame {
         dateLabel.setText(dtfHourly.format(now));
         dateSlider.addChangeListener(e -> dataSliderListener());
 
-
         add(panel);
     }
 
@@ -73,4 +72,5 @@ public class MainScreen extends JFrame {
         }
         return Double.toString(Math.round(feltTemp)) + unit;
     }
+
 }
