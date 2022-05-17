@@ -30,8 +30,8 @@ public class MainScreen extends JFrame {
                 .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
         warningButton.setIcon(warningIcon);
 
-        actualTempLabel.setText(APIfetcher.getCurrentActualTemp() + "°C");
-        feltTempLabel.setText(APIfetcher.getCurrentFeltTemp() + "°C");
+        actualTempLabel.setText(actualTemp(true));
+        feltTempLabel.setText(feltTemp(true));
 
         this.now = LocalDateTime.now();
         this.dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
@@ -52,5 +52,25 @@ public class MainScreen extends JFrame {
         } else {
             dateLabel.setText(dtfDaily.format(currentTime.plusDays(value - 46)));
         }
+    }
+
+    private String actualTemp(boolean isCelsius) {
+        double actualTemp = Double.parseDouble(APIfetcher.getCurrentActualTemp());
+        String unit = "°C";
+        if (!isCelsius) {
+            actualTemp = actualTemp * 9. / 5. + 32;
+            unit = "°F";
+        }
+        return Double.toString(Math.round(actualTemp)) + unit;
+    }
+
+    private String feltTemp(boolean isCelsius) {
+        double feltTemp = Double.parseDouble(APIfetcher.getCurrentFeltTemp());
+        String unit = "°C";
+        if (!isCelsius) {
+            feltTemp = feltTemp * 9. / 5. + 32;
+            unit = "°F";
+        }
+        return Double.toString(Math.round(feltTemp)) + unit;
     }
 }
