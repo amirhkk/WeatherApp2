@@ -62,8 +62,8 @@ public class MainScreen extends JFrame {
         double feltTemp = forecast.get("Felt");
         String unit = "°C";
         if (!isCelsius) {
-            actualTemp = toFarenheit(actualTemp);
-            feltTemp = toFarenheit(actualTemp);
+            actualTemp = toFahrenheit(actualTemp);
+            feltTemp = toFahrenheit(actualTemp);
             unit = "°F";
         }
         actualTemp = Math.round(actualTemp);
@@ -71,7 +71,7 @@ public class MainScreen extends JFrame {
         return new TempPair<String>(actualTemp + unit, feltTemp + unit);
     }
 
-    private double toFarenheit(double celsiusTemp) {
+    private double toFahrenheit(double celsiusTemp) {
         return celsiusTemp * 9. / 5. + 32;
     }
 
