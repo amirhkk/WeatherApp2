@@ -23,8 +23,4 @@ public class RootScreen extends JFrame{
     public void goWarning() {
         layout.show(rootPanel, "warningPanel");
     }
-
-    public JPanel getPanel() {
-        return rootPanel;
-    }
 }

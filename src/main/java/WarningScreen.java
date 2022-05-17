@@ -17,8 +17,4 @@ public class WarningScreen extends JFrame {
     public JPanel getPanel() {
         return warningPanel;
     }
-
-    public JButton getExitButton() {
-        return exitButton;
-    }
 }
