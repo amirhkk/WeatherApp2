@@ -13,7 +13,6 @@ public class MainScreen extends JFrame {
     private JLabel dateLabel;
     private JButton warningButton;
 
-    private final LocalDateTime now;
     private final DateTimeFormatter dtfHourly;
     private final DateTimeFormatter dtfDaily;
 
@@ -28,11 +27,11 @@ public class MainScreen extends JFrame {
                 .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
         warningButton.setIcon(warningIcon);
 
-        TempPair<String> tempPair = forecast(0, true);
-        actualTempLabel.setText(tempPair.getActualTemp());
-        feltTempLabel.setText(tempPair.getFeltTemp());
+        TemperatureRecord<String> temperatureRecord = forecast(0, true);
+        actualTempLabel.setText(temperatureRecord.actualTemp());
+        feltTempLabel.setText(temperatureRecord.feltTemp());
 
-        this.now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
         this.dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
         this.dtfDaily = DateTimeFormatter.ofPattern("MM/dd");
 
@@ -45,9 +44,9 @@ public class MainScreen extends JFrame {
 
     private void dataSliderListener() {
         int value = dateSlider.getValue();
-        TempPair<String> tempPair = forecast(value, true);
-        actualTempLabel.setText(tempPair.getActualTemp());
-        feltTempLabel.setText(tempPair.getFeltTemp());
+        TemperatureRecord<String> temperatureRecord = forecast(value, true);
+        actualTempLabel.setText(temperatureRecord.actualTemp());
+        feltTempLabel.setText(temperatureRecord.feltTemp());
         LocalDateTime currentTime = LocalDateTime.now();
         if (value < 48) {
             dateLabel.setText(dtfHourly.format(currentTime.plusHours(value)));
@@ -56,7 +55,7 @@ public class MainScreen extends JFrame {
         }
     }
 
-    private TempPair<String> forecast(int timeIndex, boolean isCelsius) {
+    private TemperatureRecord<String> forecast(int timeIndex, boolean isCelsius) {
         Map<String, Double> forecast = APIfetcher.getForecast(timeIndex);
         double actualTemp = forecast.get("Actual");
         double feltTemp = forecast.get("Felt");
@@ -68,7 +67,7 @@ public class MainScreen extends JFrame {
         }
         actualTemp = Math.round(actualTemp);
         feltTemp = Math.round(feltTemp);
-        return new TempPair<String>(actualTemp + unit, feltTemp + unit);
+        return new TemperatureRecord<>(actualTemp + unit, feltTemp + unit);
     }
 
     private double toFahrenheit(double celsiusTemp) {
