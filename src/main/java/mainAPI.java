@@ -12,7 +12,7 @@ public class mainAPI{
 
         Map<Weather, String> curr = APIfetcher.getForecast(0); // test current
         Map<Weather, String> hourly = APIfetcher.getForecast(1); // test hourly
-        Map<Weather, String> daily = APIfetcher.getForecast(48); // test daily
+        Map<Weather, String> daily = APIfetcher.getForecast(48); // test dailyu
 
         System.out.println(curr.get(Weather.TEMP));
         System.out.println(curr.get(Weather.ICON));
