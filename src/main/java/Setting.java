@@ -210,7 +210,7 @@ public class Setting extends JFrame {
         displayTempGroup.add(feltRadioButton);
         displayTempGroup.add(bothRadioButton);
 
-        actualRadioButton.setSelected(true);
+        bothRadioButton.setSelected(true);
         tempPanel.setVisible(false);
         precPanel.setVisible(false);
         rainPanel.setVisible(false);
