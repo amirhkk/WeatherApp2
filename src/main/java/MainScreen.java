@@ -23,6 +23,10 @@ public class MainScreen extends JFrame {
         setSize(450, 700);
         this.settingScreen = settingScreen;
 
+        ImageIcon settingsIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/gear.png")
+                .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
+        settingsButton.setIcon(settingsIcon);
+
         ImageIcon warningIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/Warning.png")
                 .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
         warningButton.setIcon(warningIcon);
