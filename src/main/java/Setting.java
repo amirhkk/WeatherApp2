@@ -24,6 +24,16 @@ public class Setting extends JFrame {
     private JToggleButton rainButton;
     private JPanel rainPanel;
     private JTextField rainTimeText;
+    private JRadioButton fRadioButton;
+    private JRadioButton cRadioButton;
+    private JLabel formatLabel;
+    private JRadioButton bothRadioButton;
+    private JRadioButton actualRadioButton;
+    private JRadioButton feltRadioButton;
+    private JLabel tempUnitsLabel;
+    private JLabel dispTempLabel;
+    private ButtonGroup tempUnitGroup = new ButtonGroup();
+    private ButtonGroup displayTempGroup = new ButtonGroup();
 
     final private int CELSIUS = 0;
     final private int FAHRENHEIT = 1;
@@ -149,6 +159,58 @@ public class Setting extends JFrame {
             }
         });
 
+        cRadioButton.setSelected(true);
+        cRadioButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(cRadioButton.isSelected()) {
+                    toggleTemperatureUnits();
+                }
+            }
+        });
+
+        fRadioButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(fRadioButton.isSelected()) {
+                    toggleTemperatureUnits();
+                }
+            }
+        });
+
+        actualRadioButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(actualRadioButton.isSelected()) {
+                    toggleTemperatureDisplay(0);
+                }
+            }
+        });
+        feltRadioButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(feltRadioButton.isSelected()) {
+                    toggleTemperatureDisplay(1);
+                }
+            }
+        });
+        bothRadioButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(bothRadioButton.isSelected()) {
+                    toggleTemperatureDisplay(2);
+                }
+            }
+        });
+
+        tempUnitGroup.add(cRadioButton);
+        tempUnitGroup.add(fRadioButton);
+
+        displayTempGroup.add(actualRadioButton);
+        displayTempGroup.add(feltRadioButton);
+        displayTempGroup.add(bothRadioButton);
+
+        actualRadioButton.setSelected(true);
         tempPanel.setVisible(false);
         precPanel.setVisible(false);
         rainPanel.setVisible(false);
