@@ -402,10 +402,12 @@ public class Setting extends JFrame {
     }
 
     public int getTemperatureUnits() {
+        System.out.println("GET TEMP CALLED" + temperatureUnits);
         return temperatureUnits;
     }
 
     public int getDisplayTemperatureTypes() {
+        System.out.println("GET DISPLAY CALLED" + displayTemperatureTypes);
         return displayTemperatureTypes;
     }
 }

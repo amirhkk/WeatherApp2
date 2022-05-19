@@ -60,10 +60,14 @@ public class MainScreen extends JFrame {
     }
 
     private TemperatureRecord<String> forecast(int timeIndex) {
-        Map<Weather, String> forecast = APIfetcher.getForecast(timeIndex);
+        /*Map<Weather, String> forecast = APIfetcher.getForecast(timeIndex);
         double actualTemp = Double.parseDouble(forecast.get(Weather.TEMP));
-        double feltTemp = Double.parseDouble(forecast.get(Weather.FELT));
+        double feltTemp = Double.parseDouble(forecast.get(Weather.FELT));*/
+        double actualTemp = 14.1;
+        double feltTemp = 14.0;
         String unit = "°C";
+        System.out.println(settingScreen.getTemperatureUnits());
+        System.out.println(settingScreen.getDisplayTemperatureTypes());
         if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
             actualTemp = toFahrenheit(actualTemp);
             feltTemp = toFahrenheit(actualTemp);
@@ -71,7 +75,8 @@ public class MainScreen extends JFrame {
         }
         actualTemp = Math.round(actualTemp * 10.0) / 10.0;
         feltTemp = Math.round(feltTemp * 10.0) / 10.0;
-        return new TemperatureRecord<>(actualTemp + unit, feltTemp + unit, forecast.get(Weather.ICON));
+        // return new TemperatureRecord<>(actualTemp + unit, feltTemp + unit, forecast.get(Weather.ICON));
+        return new TemperatureRecord<>(14.1 + unit, 14.0 + unit, "Warning");
     }
 
     private double toFahrenheit(double celsiusTemp) {
