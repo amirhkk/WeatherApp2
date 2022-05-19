@@ -1,7 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class WarningScreen extends JFrame {
     private JTextArea warningTextArea;
@@ -14,11 +11,11 @@ public class WarningScreen extends JFrame {
         exitButton.addActionListener(e -> parent.goMain());
     }
 
-    public JPanel getPanel() {
+    public JPanel getWarningPanel() {
         return warningPanel;
     }
 
-    public JButton getExitButton() {
-        return exitButton;
+    public void refresh() {
+        warningTextArea.setText("Refreshed Placeholder Warning");
     }
 }

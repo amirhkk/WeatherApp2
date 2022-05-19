@@ -13,7 +13,7 @@ public class Setting extends JFrame {
     private JCheckBox precCheckBox;
     private JCheckBox rainCheckBox;
     private JCheckBox stormCheckBox;
-    private JPanel panel;
+    private JPanel settingPanel;
     private JTextField minTempText;
     private JTextField maxTempText;
     private JToggleButton precButton;
@@ -51,8 +51,10 @@ public class Setting extends JFrame {
     // DISPLAY SETTINGS
     int displayTemperatureTypes = BOTH_TEMPERATURES;
 
-    public Setting() {
+    public Setting(RootScreen parent) {
         setSize(450, 700);
+
+        backButton.addActionListener(e -> parent.goMain());
 
         tempCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -150,7 +152,7 @@ public class Setting extends JFrame {
         tempPanel.setVisible(false);
         precPanel.setVisible(false);
         rainPanel.setVisible(false);
-        add(panel);
+        add(settingPanel);
     }
 
     private boolean allSettingsSyncedWithUI() {
@@ -300,6 +302,10 @@ public class Setting extends JFrame {
         } else {
             throw new IllegalArgumentException("Invalid temperature display setting " + settingID);
         }
+    }
+
+    public JPanel getSettingPanel() {
+        return settingPanel;
     }
 
     public int getTemperatureUnits() {
