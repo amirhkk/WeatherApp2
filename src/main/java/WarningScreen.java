@@ -14,4 +14,8 @@ public class WarningScreen extends JFrame {
     public JPanel getWarningPanel() {
         return warningPanel;
     }
+
+    public void refresh() {
+        warningTextArea.setText("Refreshed Placeholder Warning");
+    }
 }

@@ -74,6 +74,10 @@ public class MainScreen extends JFrame {
         return celsiusTemp * 9. / 5. + 32;
     }
 
+    public void refresh() {
+        dataSliderListener();
+    }
+
     public JPanel getMainPanel() {
         return mainPanel;
     }
