@@ -32,7 +32,7 @@ public class MainScreen extends JFrame {
         this.dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
         this.dtfDaily = DateTimeFormatter.ofPattern("MM/dd");
 
-        dateSlider.addChangeListener(e -> dataSliderListener());
+        dateSlider.addChangeListener(e -> refresh());
         settingsButton.addActionListener(e -> parent.goSetting());
         warningButton.addActionListener(e -> parent.goWarning());
 
@@ -40,10 +40,6 @@ public class MainScreen extends JFrame {
     }
 
     public void refresh() {
-        dataSliderListener();
-    }
-
-    private void dataSliderListener() {
         int value = dateSlider.getValue();
         TemperatureRecord<String> temperatureRecord = forecast(value);
         actualTempLabel.setText(temperatureRecord.actualTemp());
@@ -59,18 +55,18 @@ public class MainScreen extends JFrame {
     }
 
     private TemperatureRecord<String> forecast(int timeIndex) {
-        Map<String, Double> forecast = APIfetcher.getForecast(timeIndex);
-        double actualTemp = forecast.get("Actual");
-        double feltTemp = forecast.get("Felt");
+        Map<Weather, String> forecast = APIfetcher.getForecast(timeIndex);
+        double actualTemp = Double.parseDouble(forecast.get(Weather.TEMP));
+        double feltTemp = Double.parseDouble(forecast.get(Weather.FELT));
         String unit = "°C";
         if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
             actualTemp = toFahrenheit(actualTemp);
             feltTemp = toFahrenheit(actualTemp);
             unit = "°F";
         }
-        actualTemp = Math.round(actualTemp);
-        feltTemp = Math.round(feltTemp);
-        return new TemperatureRecord<>(actualTemp + unit, feltTemp + unit);
+        actualTemp = Math.round(actualTemp * 10.0) / 10.0;
+        feltTemp = Math.round(feltTemp * 10.0) / 10.0;
+        return new TemperatureRecord<>(actualTemp + unit, feltTemp + unit, forecast.get(Weather.ICON));
     }
 
     private double toFahrenheit(double celsiusTemp) {
