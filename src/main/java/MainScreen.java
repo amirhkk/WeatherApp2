@@ -39,6 +39,9 @@ public class MainScreen extends JFrame {
 
     public void refresh() {
         int value = dateSlider.getValue();
+        if (value > 47) {
+            value = 47 + (value - 47) / 8;
+        }
         TemperatureRecord<String> temperatureRecord = forecast(value);
         actualTempLabel.setText(temperatureRecord.actualTemp());
         feltTempLabel.setText(temperatureRecord.feltTemp());

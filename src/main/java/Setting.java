@@ -409,10 +409,36 @@ public class Setting extends JFrame {
     public int getDisplayTemperatureTypes() {
         return displayTemperatureTypes;
     }
+
+    public boolean isExtremeTemperatureNotificationEnabled() {
+        return extremeTemperatureNotificationEnabled;
+    }
+
+    public boolean isExtremePrecipitationNotificationsEnabled() {
+        return extremePrecipitationNotificationsEnabled;
+    }
+
+    public boolean isImminentRainNotificationsEnabled() {
+        return imminentRainNotificationsEnabled;
+    }
+
+    public boolean isStormWarningNotificationsEnabled() {
+        return stormWarningNotificationsEnabled;
+    }
+
+    public int getExtremeTemperatureHigh() {
+        return extremeTemperatureHighC;
+    }
+
+    public int getExtremeTemperatureLow() {
+        return extremeTemperatureLowC;
+    }
+
+    public int getExtremePrecipitation() {
+        return extremePrecipitation;
+    }
+
+    public int getImminentRainTime() {
+        return imminentRainTime;
+    }
 }
-
-
-
-
-
-
