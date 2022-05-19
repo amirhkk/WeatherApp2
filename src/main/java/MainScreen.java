@@ -32,6 +32,7 @@ public class MainScreen extends JFrame {
         TemperatureRecord<String> temperatureRecord = forecast(0);
         actualTempLabel.setText(temperatureRecord.actualTemp());
         feltTempLabel.setText(temperatureRecord.feltTemp());
+        setTemperatureDisplay();
 
         LocalDateTime now = LocalDateTime.now();
         this.dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
@@ -49,6 +50,7 @@ public class MainScreen extends JFrame {
         TemperatureRecord<String> temperatureRecord = forecast(value);
         actualTempLabel.setText(temperatureRecord.actualTemp());
         feltTempLabel.setText(temperatureRecord.feltTemp());
+        setTemperatureDisplay();
         LocalDateTime currentTime = LocalDateTime.now();
         if (value < 48) {
             dateLabel.setText(dtfHourly.format(currentTime.plusHours(value)));
@@ -74,6 +76,20 @@ public class MainScreen extends JFrame {
 
     private double toFahrenheit(double celsiusTemp) {
         return celsiusTemp * 9. / 5. + 32;
+    }
+
+    private void setTemperatureDisplay() {
+        int displayTempTypes = settingScreen.getDisplayTemperatureTypes();
+        if (displayTempTypes == settingScreen.BOTH_TEMPERATURES) {
+            actualTempLabel.setVisible(true);
+            feltTempLabel.setVisible(true);
+        } else if (displayTempTypes == settingScreen.ACTUAL_TEMPERATURE) {
+            actualTempLabel.setVisible(true);
+            feltTempLabel.setVisible(false);
+        } else { // displayTempTypes == settingScreen.FELT_TEMPERATURE
+            actualTempLabel.setVisible(false);
+            feltTempLabel.setVisible(true);
+        }
     }
 
     public void refresh() {
