@@ -17,7 +17,7 @@ public class RootScreen extends JFrame{
 
         rootPanel.add("mainPanel", mainScreen.getMainPanel());
         rootPanel.add("warningPanel", warningScreen.getWarningPanel());
-        rootPanel.add("settingPanel", new Setting(this).getSettingPanel());
+        rootPanel.add("settingPanel", settingScreen.getSettingPanel());
         layout.show(rootPanel, "mainPanel");
 
         add(rootPanel);
