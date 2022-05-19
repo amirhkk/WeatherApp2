@@ -13,11 +13,13 @@ public class MainScreen extends JFrame {
     private JLabel dateLabel;
     private JButton warningButton;
 
+    private final Setting settingScreen;
     private final DateTimeFormatter dtfHourly;
     private final DateTimeFormatter dtfDaily;
 
-    public MainScreen(RootScreen parent) {
+    public MainScreen(RootScreen parent, Setting settingScreen) {
         setSize(450, 700);
+        this.settingScreen = settingScreen;
 
         ImageIcon weatherIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/" + APIfetcher.getCurrentIcon()  + ".png")
                 .getImage().getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
@@ -27,7 +29,7 @@ public class MainScreen extends JFrame {
                 .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
         warningButton.setIcon(warningIcon);
 
-        TemperatureRecord<String> temperatureRecord = forecast(0, true);
+        TemperatureRecord<String> temperatureRecord = forecast(0);
         actualTempLabel.setText(temperatureRecord.actualTemp());
         feltTempLabel.setText(temperatureRecord.feltTemp());
 
@@ -44,7 +46,7 @@ public class MainScreen extends JFrame {
 
     private void dataSliderListener() {
         int value = dateSlider.getValue();
-        TemperatureRecord<String> temperatureRecord = forecast(value, true);
+        TemperatureRecord<String> temperatureRecord = forecast(value);
         actualTempLabel.setText(temperatureRecord.actualTemp());
         feltTempLabel.setText(temperatureRecord.feltTemp());
         LocalDateTime currentTime = LocalDateTime.now();
@@ -55,12 +57,12 @@ public class MainScreen extends JFrame {
         }
     }
 
-    private TemperatureRecord<String> forecast(int timeIndex, boolean isCelsius) {
+    private TemperatureRecord<String> forecast(int timeIndex) {
         Map<String, Double> forecast = APIfetcher.getForecast(timeIndex);
         double actualTemp = forecast.get("Actual");
         double feltTemp = forecast.get("Felt");
         String unit = "°C";
-        if (!isCelsius) {
+        if (settingScreen.getTemperatureUnits() == 1) {
             actualTemp = toFahrenheit(actualTemp);
             feltTemp = toFahrenheit(actualTemp);
             unit = "°F";
