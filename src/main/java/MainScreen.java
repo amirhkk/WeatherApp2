@@ -12,6 +12,8 @@ public class MainScreen extends JFrame {
     private JLabel weatherIconLabel;
     private JLabel dateLabel;
     private JButton warningButton;
+    private JLabel feltTextLabel;
+    private JLabel actualTextLabel;
 
     private final Setting settingScreen;
     private final DateTimeFormatter dtfHourly;
@@ -80,13 +82,19 @@ public class MainScreen extends JFrame {
         int displayTempTypes = settingScreen.getDisplayTemperatureTypes();
         if (displayTempTypes == settingScreen.BOTH_TEMPERATURES) {
             actualTempLabel.setVisible(true);
+            actualTextLabel.setVisible(true);
             feltTempLabel.setVisible(true);
+            feltTextLabel.setVisible(true);
         } else if (displayTempTypes == settingScreen.ACTUAL_TEMPERATURE) {
             actualTempLabel.setVisible(true);
+            actualTextLabel.setVisible(true);
             feltTempLabel.setVisible(false);
+            feltTextLabel.setVisible((false));
         } else { // displayTempTypes == settingScreen.FELT_TEMPERATURE
             actualTempLabel.setVisible(false);
+            actualTextLabel.setVisible(false);
             feltTempLabel.setVisible(true);
+            feltTextLabel.setVisible(true);
         }
     }
 

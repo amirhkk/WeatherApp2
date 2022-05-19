@@ -86,7 +86,7 @@
           <text value="Warning!"/>
         </properties>
       </component>
-      <component id="46ba7" class="javax.swing.JLabel">
+      <component id="46ba7" class="javax.swing.JLabel" binding="actualTextLabel">
         <constraints>
           <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -95,7 +95,7 @@
           <text value="Actual"/>
         </properties>
       </component>
-      <component id="62c75" class="javax.swing.JLabel">
+      <component id="62c75" class="javax.swing.JLabel" binding="feltTextLabel">
         <constraints>
           <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
