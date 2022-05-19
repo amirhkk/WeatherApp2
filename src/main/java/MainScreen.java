@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 public class MainScreen extends JFrame {
     private JPanel mainPanel;
@@ -59,11 +60,9 @@ public class MainScreen extends JFrame {
     }
 
     private TemperatureRecord<String> forecast(int timeIndex) {
-        /*Map<Weather, String> forecast = APIfetcher.getForecast(timeIndex);
+        Map<Weather, String> forecast = APIfetcher.getForecast(timeIndex);
         double actualTemp = Double.parseDouble(forecast.get(Weather.TEMP));
-        double feltTemp = Double.parseDouble(forecast.get(Weather.FELT));*/
-        double actualTemp = 14.1;
-        double feltTemp = 14.0;
+        double feltTemp = Double.parseDouble(forecast.get(Weather.FELT));
         String unit = "°C";
         if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
             actualTemp = toFahrenheit(actualTemp);
@@ -72,8 +71,7 @@ public class MainScreen extends JFrame {
         }
         actualTemp = Math.round(actualTemp * 10.0) / 10.0;
         feltTemp = Math.round(feltTemp * 10.0) / 10.0;
-        // return new TemperatureRecord<>(actualTemp + unit, feltTemp + unit, forecast.get(Weather.ICON));
-        return new TemperatureRecord<>(actualTemp + unit, feltTemp + unit, "Warning");
+        return new TemperatureRecord<>(actualTemp + unit, feltTemp + unit, forecast.get(Weather.ICON));
     }
 
     private double toFahrenheit(double celsiusTemp) {
