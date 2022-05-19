@@ -182,7 +182,7 @@ public class Setting extends JFrame {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(actualRadioButton.isSelected()) {
-                    toggleTemperatureDisplay(0);
+                    toggleTemperatureDisplay(ACTUAL_TEMPERATURE);
                 }
             }
         });
@@ -190,7 +190,7 @@ public class Setting extends JFrame {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(feltRadioButton.isSelected()) {
-                    toggleTemperatureDisplay(1);
+                    toggleTemperatureDisplay(FELT_TEMPERATURE);
                 }
             }
         });
@@ -198,10 +198,12 @@ public class Setting extends JFrame {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(bothRadioButton.isSelected()) {
-                    toggleTemperatureDisplay(2);
+                    toggleTemperatureDisplay(BOTH_TEMPERATURES);
                 }
             }
         });
+
+        setDefaultSettings();
 
         tempUnitGroup.add(cRadioButton);
         tempUnitGroup.add(fRadioButton);
@@ -215,6 +217,14 @@ public class Setting extends JFrame {
         precPanel.setVisible(false);
         rainPanel.setVisible(false);
         add(settingPanel);
+    }
+
+    private void setDefaultSettings() {
+        assert temperatureUnits == CELSIUS;
+        maxTempText.setText("" + extremeTemperatureHighC);
+        minTempText.setText("" + extremeTemperatureLowC);
+        maxPrecText.setText("" + extremePrecipitation);
+        rainTimeText.setText("" + imminentRainTime);
     }
 
     private void syncSettingsWithUI() {
