@@ -5,13 +5,15 @@ public class RootScreen extends JFrame{
     private JPanel rootPanel;
     private final MainScreen mainScreen;
     private final WarningScreen warningScreen;
+    private final Setting settingScreen;
     CardLayout layout;
 
     public RootScreen() {
         setSize(450, 700);
         layout = (CardLayout) rootPanel.getLayout();
-        mainScreen= new MainScreen(this);
         warningScreen = new WarningScreen(this);
+        settingScreen = new Setting(this);
+        mainScreen= new MainScreen(this, settingScreen);
 
         rootPanel.add("mainPanel", mainScreen.getMainPanel());
         rootPanel.add("warningPanel", warningScreen.getWarningPanel());
