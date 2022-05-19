@@ -46,12 +46,12 @@ public class MainScreen extends JFrame {
         if (value > 47) {
             value = 47 + (value - 47) / 8;
         }
-        TemperatureRecord<String> temperatureRecord = forecast(value);
-        actualTempLabel.setText(temperatureRecord.actualTemp());
-        feltTempLabel.setText(temperatureRecord.feltTemp());
+        WeatherRecord<String> weatherRecord = forecast(value);
+        actualTempLabel.setText(weatherRecord.actualTemp());
+        feltTempLabel.setText(weatherRecord.feltTemp());
         setTemperatureDisplay();
 
-        weatherIconLabel.setIcon(getWeatherIcon(temperatureRecord.icon()));
+        weatherIconLabel.setIcon(getWeatherIcon(weatherRecord.icon()));
 
         LocalDateTime currentTime = LocalDateTime.now();
         if (value < 48) {
@@ -66,7 +66,7 @@ public class MainScreen extends JFrame {
                 .getImage().getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
     }
 
-    private TemperatureRecord<String> forecast(int timeIndex) {
+    private WeatherRecord<String> forecast(int timeIndex) {
         Map<Weather, String> forecast = APIfetcher.getForecast(timeIndex);
         double actualTemp = Double.parseDouble(forecast.get(Weather.TEMP));
         double feltTemp = Double.parseDouble(forecast.get(Weather.FELT));
@@ -78,7 +78,7 @@ public class MainScreen extends JFrame {
         }
         actualTemp = Math.round(actualTemp * 10.0) / 10.0;
         feltTemp = Math.round(feltTemp * 10.0) / 10.0;
-        return new TemperatureRecord<>(actualTemp + unit, feltTemp + unit, forecast.get(Weather.ICON));
+        return new WeatherRecord<>(actualTemp + unit, feltTemp + unit, forecast.get(Weather.ICON));
     }
 
     private double toFahrenheit(double celsiusTemp) {
