@@ -64,7 +64,8 @@ public class Setting extends JFrame {
     public Setting(RootScreen parent) {
         setSize(450, 700);
 
-        backButton.addActionListener(e -> parent.goMain());
+        backButton.addActionListener(e ->{
+            parent.goMain();});
 
         tempCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -402,12 +403,10 @@ public class Setting extends JFrame {
     }
 
     public int getTemperatureUnits() {
-        System.out.println("GET TEMP CALLED" + temperatureUnits);
         return temperatureUnits;
     }
 
     public int getDisplayTemperatureTypes() {
-        System.out.println("GET DISPLAY CALLED" + displayTemperatureTypes);
         return displayTemperatureTypes;
     }
 }
