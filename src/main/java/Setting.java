@@ -64,69 +64,16 @@ public class Setting extends JFrame {
     public Setting(RootScreen parent) {
         setSize(450, 700);
 
-        backButton.addActionListener(e ->{
-            parent.goMain();});
+        backButton.addActionListener(e -> parent.goMain());
 
-        tempCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                toggleExtremeTemperatureNotifications();
-            }
-        });
+        tempCheckBox.addActionListener(e -> toggleExtremeTemperatureNotifications());
+        precCheckBox.addActionListener(e -> toggleExtremePrecipitationNotifications());
+        rainCheckBox.addActionListener(e -> toggleImminentRainNotifications());
+        stormCheckBox.addActionListener(e -> toggleStormWarningNotifications());
 
-        precCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                toggleExtremePrecipitationNotifications();
-            }
-        });
-
-        rainCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                toggleImminentRainNotifications();
-            }
-        });
-
-        stormCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                toggleStormWarningNotifications();
-            }
-        });
-
-        tempButton.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(tempButton.isSelected()) {
-                    tempPanel.setVisible(true);
-                } else {
-                    tempPanel.setVisible(false);
-                }
-
-            }
-        });
-        precButton.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(precButton.isSelected()) {
-                    precPanel.setVisible(true);
-                } else {
-                    precPanel.setVisible(false);
-                }
-            }
-        });
-
-        rainButton.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(rainButton.isSelected()) {
-                    rainPanel.setVisible(true);
-                } else {
-                    rainPanel.setVisible(false);
-                }
-            }
-        });
+        tempButton.addItemListener(e -> tempPanel.setVisible(tempButton.isSelected()));
+        precButton.addItemListener(e -> precPanel.setVisible(precButton.isSelected()));
+        rainButton.addItemListener(e -> rainPanel.setVisible(rainButton.isSelected()));
 
         maxTempText.addFocusListener(new FocusAdapter() {
             @Override
@@ -161,46 +108,31 @@ public class Setting extends JFrame {
         });
 
         cRadioButton.setSelected(true);
-        cRadioButton.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(cRadioButton.isSelected()) {
-                    toggleTemperatureUnits();
-                }
+        cRadioButton.addItemListener(e -> {
+            if(cRadioButton.isSelected()) {
+                toggleTemperatureUnits();
             }
         });
 
-        fRadioButton.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(fRadioButton.isSelected()) {
-                    toggleTemperatureUnits();
-                }
+        fRadioButton.addItemListener(e -> {
+            if(fRadioButton.isSelected()) {
+                toggleTemperatureUnits();
             }
         });
 
-        actualRadioButton.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(actualRadioButton.isSelected()) {
-                    toggleTemperatureDisplay(ACTUAL_TEMPERATURE);
-                }
+        actualRadioButton.addItemListener(e -> {
+            if(actualRadioButton.isSelected()) {
+                toggleTemperatureDisplay(ACTUAL_TEMPERATURE);
             }
         });
-        feltRadioButton.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(feltRadioButton.isSelected()) {
-                    toggleTemperatureDisplay(FELT_TEMPERATURE);
-                }
+        feltRadioButton.addItemListener(e -> {
+            if(feltRadioButton.isSelected()) {
+                toggleTemperatureDisplay(FELT_TEMPERATURE);
             }
         });
-        bothRadioButton.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(bothRadioButton.isSelected()) {
-                    toggleTemperatureDisplay(BOTH_TEMPERATURES);
-                }
+        bothRadioButton.addItemListener(e -> {
+            if(bothRadioButton.isSelected()) {
+                toggleTemperatureDisplay(BOTH_TEMPERATURES);
             }
         });
 
