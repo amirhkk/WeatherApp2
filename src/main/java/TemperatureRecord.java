@@ -1,1 +1,1 @@
-public record TemperatureRecord<T>(T actualTemp, T feltTemp) {}
+public record TemperatureRecord<T>(T actualTemp, T feltTemp, T icon) {}
