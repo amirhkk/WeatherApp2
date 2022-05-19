@@ -15,54 +15,67 @@ import java.util.stream.Collectors;
 
 public class APIfetcher {
 
+    // Singleton pattern - only ever one JSON object in focus
     private static APIfetcher currentData;
+    // Actual data in JSON format
     private JsonObject json;
 
     private APIfetcher(){
         try {
-            URL url = new URL("https://api.openweathermap.org/data/2.5/onecall?lat=52.205276&lon=0.119167&exclude=&appid=861bc7cd5c98494df6f104259f04fb3b");
+            // URL we fetch data from
+            URL url = new URL("https://api.openweathermap.org/data/2.5/onecall?" // API website
+                    + "lat=52.205276&lon=0.119167" // Global co-ordinates for Cambridge
+                    +"&appid=861bc7cd5c98494df6f104259f04fb3b"); // API key
 
+            // Make connection to website using URL
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-
+            // Deal with if fetch fails
             if(connection.getResponseCode() != 200) {
                 throw new RuntimeException("There is an issue with the API connection :/");
             }
 
+            // Puts data from website into one long String
             String dataAsString = new BufferedReader(new InputStreamReader(url.openStream())).lines().collect(Collectors.joining("\n"));
 
+            // Parses one long string into a JSON object which is easier to work with
             this.json = JsonParser.parseString(dataAsString).getAsJsonObject();
 
-        } catch (IOException e) {
+        } catch (IOException e) { // If large-scale error with fetch
+            // Chain exception - gives all information about error
             e.printStackTrace();
         }
     }
 
-    private static void update(){
+    private static void update(){ // Ensures currentData is up-to-date
         currentData = new APIfetcher();
     }
 
     public static Double getCurrentActualTemp(){
-        APIfetcher.update();
-        return Double.parseDouble(currentData.json.getAsJsonObject("current").get("temp").getAsString()) - 273.15;
+        APIfetcher.update(); // Updates currentData to current values
+        return Double.parseDouble(
+                currentData.json.getAsJsonObject("current").get("temp").getAsString() // Get current.temp as String
+        ) - 273.15; // Convert String to Double then from Kelvin to Celcius
     }
 
     public static Double getCurrentFeltTemp(){
-        APIfetcher.update();
-        return Double.parseDouble(currentData.json.getAsJsonObject("current").get("feels_like").getAsString()) - 273.15;
+        APIfetcher.update(); // Updates currentData to current values
+        return Double.parseDouble(
+                currentData.json.getAsJsonObject("current").get("feels_like").getAsString() // Get current.feels_like as String
+        ) - 273.15; // Convert String to Double then from Kelvin to Celcius
     }
 
     public static Map<String, String> getHourlyAt(String hour){
-        APIfetcher.update();
-        int hourAsInt = Integer.parseInt(hour);
-        if (hourAsInt > 47 || hourAsInt < 0) {
-            throw new IllegalArgumentException("We only provide forecasts for the next 48hrs (0-47");
+        APIfetcher.update(); // Updates currentData to current values
+        int hourAsInt = Integer.parseInt(hour); // Parses String argument to Integer
+        if (hourAsInt > 47 || hourAsInt < 0) { // Range check on argument
+            throw new IllegalArgumentException("We only provide forecasts for the next 48hrs (0-47"); // Exception if failed range check
         }
 
-        Map<String, String> result = new HashMap<>();
+        Map<String, String> result = new HashMap<>(); // Create String->String hash map to return
 
         JsonObject queryResult = currentData.json.getAsJsonArray("hourly").get(hourAsInt).getAsJsonObject();
-        result.put("actual", Double.toString(Double.parseDouble(queryResult.get("temp").getAsString()) -273.15));
+        result.put("actual", Double.toString(Double.parseDouble(queryResult.get("temp").getAsString()) - 273.15));
         result.put("felt", Double.toString(Double.parseDouble(queryResult.get("feels_like").getAsString()) - 273.15));
 
         return result;

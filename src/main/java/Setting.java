@@ -1,8 +1,5 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 
 public class Setting extends JFrame {
     private JLabel notiLabel;
@@ -16,7 +13,7 @@ public class Setting extends JFrame {
     private JCheckBox precCheckBox;
     private JCheckBox rainCheckBox;
     private JCheckBox stormCheckBox;
-    private JPanel panel;
+    private JPanel settingPanel;
     private JTextField minTempText;
     private JTextField maxTempText;
     private JToggleButton precButton;
@@ -54,8 +51,10 @@ public class Setting extends JFrame {
     // DISPLAY SETTINGS
     int displayTemperatureTypes = BOTH_TEMPERATURES;
 
-    public Setting() {
+    public Setting(RootScreen parent) {
         setSize(450, 700);
+
+        backButton.addActionListener(e -> parent.goMain());
 
         tempCheckBox.addActionListener(new ActionListener() {
             @Override
@@ -118,10 +117,42 @@ public class Setting extends JFrame {
             }
         });
 
+        maxTempText.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                setNewExtremeHighTemperature(maxTempText.getText());
+            }
+        });
+
+        minTempText.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                setNewExtremeLowTemperature(minTempText.getText());
+            }
+        });
+
+        maxPrecText.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                setNewExtremePrecipitation(maxPrecText.getText());
+            }
+        });
+
+        rainTimeText.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                setNewImminentRain(rainTimeText.getText());
+            }
+        });
+
         tempPanel.setVisible(false);
         precPanel.setVisible(false);
         rainPanel.setVisible(false);
-        add(panel);
+        add(settingPanel);
     }
 
     private boolean allSettingsSyncedWithUI() {
@@ -140,77 +171,149 @@ public class Setting extends JFrame {
         return true;
     }
 
-
-    private void setNewExtremeHighTemperature(int newHigh) {
-        // TODO: Check is valid input
-        if (this.temperatureUnits == CELSIUS) { // If temperature is in Celsius
-            this.extremeTemperatureHighC = newHigh; // Set Celsius temperature
-            this.extremeTemperatureHighF = newHigh * 9 / 5 + 32; // Calculate and set Fahrenheit temperature
-        } else if (this.temperatureUnits == FAHRENHEIT) { // If temperature is in Fahrenheit
-            this.extremeTemperatureHighF = newHigh; // Set Fahrenheit temperature
-            this.extremeTemperatureHighC = (newHigh - 32) * 5 / 9; // Calculate and set Celsius temperature
+    private void setNewExtremeHighTemperature(String newHigh) {
+        if (this.temperatureUnits == CELSIUS) {
+            try {
+                int parsed_newHigh = (int) (Double.parseDouble(newHigh) + 0.5);
+                if (parsed_newHigh > 35) {
+                    parsed_newHigh = 35;
+                } else if (parsed_newHigh <= this.extremeTemperatureLowC) {
+                    parsed_newHigh = this.extremeTemperatureLowC + 1;
+                }
+                this.extremeTemperatureHighC = parsed_newHigh;
+                this.extremeTemperatureHighF = (int) (((double) parsed_newHigh) * 9.0 / 5.0 + 32.0 + 0.5);
+                this.maxTempText.setText("" + parsed_newHigh);
+            } catch (NumberFormatException e) {
+                this.maxTempText.setText("" + this.extremeTemperatureHighC);
+            }
+        } else if (this.temperatureUnits == FAHRENHEIT) {
+            try {
+                int parsed_newHigh = (int) (Double.parseDouble(newHigh) + 0.5);
+                if (parsed_newHigh > 95) {
+                    parsed_newHigh = 95;
+                } else if (parsed_newHigh <= this.extremeTemperatureLowF) {
+                    parsed_newHigh = this.extremeTemperatureLowF + 1;
+                }
+                this.extremeTemperatureHighF = parsed_newHigh;
+                this.extremeTemperatureHighC = (int) ((((double) parsed_newHigh) - 32.0) * 5.0 / 9.0 + 0.5);
+                this.maxTempText.setText("" + parsed_newHigh);
+            } catch (NumberFormatException e) {
+                this.maxTempText.setText("" + this.extremeTemperatureHighF);
+            }
         }
     }
 
-    private void setNewExtremeLowTemperature(int newLow) {
-        // TODO: Check is valid input
-        if (this.temperatureUnits == CELSIUS) { // If temperature is in Celsius
-            this.extremeTemperatureLowC = newLow; // Set Celsius temperature
-            this.extremeTemperatureLowF = newLow * 9 / 5 + 32; // Calculate and set Fahrenheit temperature
-        } else if (this.temperatureUnits == FAHRENHEIT) { // If temperature is in Fahrenheit
-            this.extremeTemperatureLowF = newLow; // Set Fahrenheit temperature
-            this.extremeTemperatureLowC = (newLow - 32) * 5 / 9; // Calculate and set Celsius temperature
+    private void setNewExtremeLowTemperature(String newLow) {
+        if (temperatureUnits == CELSIUS) {
+            try {
+                int parsed_newLow = (int) (Double.parseDouble(newLow) + 0.5);
+                if (parsed_newLow >= extremeTemperatureHighC) {
+                    parsed_newLow = extremeTemperatureHighC - 1;
+                } else if (parsed_newLow < -15) {
+                    parsed_newLow = -15;
+                }
+                extremeTemperatureLowC = parsed_newLow;
+                extremeTemperatureLowF = (int) (((double) parsed_newLow) * 9.0 / 5.0 + 32.0 + 0.5);
+                minTempText.setText("" + parsed_newLow);
+            } catch (NumberFormatException e) {
+                minTempText.setText("" + extremeTemperatureLowC);
+            }
+        } else if (temperatureUnits == FAHRENHEIT) {
+            try {
+                int parsed_newLow = (int) (Double.parseDouble(newLow) + 0.5);
+                if (parsed_newLow >= extremeTemperatureHighF) {
+                    parsed_newLow = extremeTemperatureHighF - 1;
+                } else if (parsed_newLow < 5) {
+                    parsed_newLow = 5;
+                }
+                extremeTemperatureLowF = parsed_newLow;
+                extremeTemperatureLowC = (int) ((((double) parsed_newLow) - 32.0) * 5.0 / 9.0 + 0.5);
+                minTempText.setText("" + parsed_newLow);
+            } catch (NumberFormatException e) {
+                minTempText.setText("" + extremeTemperatureLowF);
+            }
         }
     }
 
-    private void setNewExtremePrecipitation(int precipitation) {
-        // TODO: Check is valid input in label event
-        this.extremePrecipitation = precipitation;
+    private void setNewExtremePrecipitation(String precipitation) {
+        try {
+            int parsed_precipitation = (int) (Double.parseDouble(precipitation) + 0.5);
+            if (parsed_precipitation < 1) {
+                parsed_precipitation = 1;
+            } else if (parsed_precipitation > 60) {
+                parsed_precipitation = 60;
+            }
+            extremePrecipitation = parsed_precipitation;
+            maxPrecText.setText("" + parsed_precipitation);
+        } catch (NumberFormatException e) {
+            maxPrecText.setText("" + extremePrecipitation);
+        }
     }
 
-    private void setNewImminentRain(int time) {
-        // TODO: Check is valid input in label event
-        this.imminentRainTime = time;
+    private void setNewImminentRain(String time) {
+        try {
+            int parsed_time = (int) (Double.parseDouble(time) + 0.5);
+            if (parsed_time < 2) {
+                parsed_time = 2;
+            } else if (parsed_time > 300) {
+                parsed_time = 300;
+            }
+            imminentRainTime = parsed_time;
+            rainTimeText.setText("" + parsed_time);
+        } catch (NumberFormatException e) {
+            rainTimeText.setText("" + imminentRainTime);
+        }
     }
 
     private void toggleExtremeTemperatureNotifications() {
-        this.extremeTemperatureNotificationEnabled = !this.extremeTemperatureNotificationEnabled;
+        extremeTemperatureNotificationEnabled = !extremeTemperatureNotificationEnabled;
     }
 
     private void toggleExtremePrecipitationNotifications() {
-        this.extremePrecipitationNotificationsEnabled = !this.extremePrecipitationNotificationsEnabled;
+        extremePrecipitationNotificationsEnabled = !extremePrecipitationNotificationsEnabled;
     }
 
     private void toggleImminentRainNotifications() {
-        this.imminentRainNotificationsEnabled = !this.imminentRainNotificationsEnabled;
+        imminentRainNotificationsEnabled = !imminentRainNotificationsEnabled;
     }
 
     private void toggleStormWarningNotifications() {
-        this.stormWarningNotificationsEnabled = !this.stormWarningNotificationsEnabled;
+        stormWarningNotificationsEnabled = !stormWarningNotificationsEnabled;
     }
 
     private void toggleTemperatureUnits() {
-        this.temperatureUnits = 1 - this.temperatureUnits;
+        temperatureUnits = 1 - temperatureUnits;
+        if (temperatureUnits == CELSIUS) {
+            minTempText.setText("" + extremeTemperatureLowC);
+            maxTempText.setText("" + extremeTemperatureHighC);
+        } else if (temperatureUnits == FAHRENHEIT) {
+            minTempText.setText("" + extremeTemperatureLowF);
+            maxTempText.setText("" + extremeTemperatureHighF);
+        }
     }
 
     private void toggleTemperatureDisplay(int settingID) {
         if (settingID == ACTUAL_TEMPERATURE) {
-            this.displayTemperatureTypes = ACTUAL_TEMPERATURE;
+            displayTemperatureTypes = ACTUAL_TEMPERATURE;
         } else if (settingID == FELT_TEMPERATURE) {
-            this.displayTemperatureTypes = FELT_TEMPERATURE;
+            displayTemperatureTypes = FELT_TEMPERATURE;
         } else if (settingID == BOTH_TEMPERATURES) {
-            this.displayTemperatureTypes = BOTH_TEMPERATURES;
+            displayTemperatureTypes = BOTH_TEMPERATURES;
         } else {
             throw new IllegalArgumentException("Invalid temperature display setting " + settingID);
         }
     }
 
+    public JPanel getSettingPanel() {
+        return settingPanel;
+    }
+
     public int getTemperatureUnits() {
-        return this.temperatureUnits;
+        return temperatureUnits;
     }
 
     public int getDisplayTemperatureTypes() {
-        return this.displayTemperatureTypes;
+        return displayTemperatureTypes;
     }
 }
 
