@@ -21,10 +21,6 @@ public class MainScreen extends JFrame {
         setSize(450, 700);
         this.settingScreen = settingScreen;
 
-        ImageIcon weatherIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/" + APIfetcher.getCurrentIcon()  + ".png")
-                .getImage().getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
-        weatherIconLabel.setIcon(weatherIcon);
-
         ImageIcon warningIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/Warning.png")
                 .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
         warningButton.setIcon(warningIcon);
@@ -46,12 +42,19 @@ public class MainScreen extends JFrame {
         feltTempLabel.setText(temperatureRecord.feltTemp());
         setTemperatureDisplay();
 
+        weatherIconLabel.setIcon(getWeatherIcon(temperatureRecord.icon()));
+
         LocalDateTime currentTime = LocalDateTime.now();
         if (value < 48) {
             dateLabel.setText(dtfHourly.format(currentTime.plusHours(value)));
         } else {
             dateLabel.setText(dtfDaily.format(currentTime.plusDays(value - 46)));
         }
+    }
+
+    private ImageIcon getWeatherIcon(String icon) {
+        return new ImageIcon(new ImageIcon("src/main/java/Icons/" + icon + ".png")
+                .getImage().getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
     }
 
     private TemperatureRecord<String> forecast(int timeIndex) {
