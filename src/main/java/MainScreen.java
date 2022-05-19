@@ -13,11 +13,13 @@ public class MainScreen extends JFrame {
     private JLabel dateLabel;
     private JButton warningButton;
 
+    private final Setting settingScreen;
     private final DateTimeFormatter dtfHourly;
     private final DateTimeFormatter dtfDaily;
 
-    public MainScreen(RootScreen parent) {
+    public MainScreen(RootScreen parent, Setting settingScreen) {
         setSize(450, 700);
+        this.settingScreen = settingScreen;
 
         ImageIcon weatherIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/" + APIfetcher.getCurrentIcon()  + ".png")
                 .getImage().getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
@@ -27,26 +29,27 @@ public class MainScreen extends JFrame {
                 .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
         warningButton.setIcon(warningIcon);
 
-        TemperatureRecord<String> temperatureRecord = forecast(0, true);
-        actualTempLabel.setText(temperatureRecord.actualTemp());
-        feltTempLabel.setText(temperatureRecord.feltTemp());
-
-        LocalDateTime now = LocalDateTime.now();
         this.dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
         this.dtfDaily = DateTimeFormatter.ofPattern("MM/dd");
 
-        dateLabel.setText(dtfHourly.format(now));
         dateSlider.addChangeListener(e -> dataSliderListener());
-
         settingsButton.addActionListener(e -> parent.goSetting());
         warningButton.addActionListener(e -> parent.goWarning());
+
+        refresh();
+    }
+
+    public void refresh() {
+        dataSliderListener();
     }
 
     private void dataSliderListener() {
         int value = dateSlider.getValue();
-        TemperatureRecord<String> temperatureRecord = forecast(value, true);
+        TemperatureRecord<String> temperatureRecord = forecast(value);
         actualTempLabel.setText(temperatureRecord.actualTemp());
         feltTempLabel.setText(temperatureRecord.feltTemp());
+        setTemperatureDisplay();
+
         LocalDateTime currentTime = LocalDateTime.now();
         if (value < 48) {
             dateLabel.setText(dtfHourly.format(currentTime.plusHours(value)));
@@ -55,12 +58,12 @@ public class MainScreen extends JFrame {
         }
     }
 
-    private TemperatureRecord<String> forecast(int timeIndex, boolean isCelsius) {
+    private TemperatureRecord<String> forecast(int timeIndex) {
         Map<String, Double> forecast = APIfetcher.getForecast(timeIndex);
         double actualTemp = forecast.get("Actual");
         double feltTemp = forecast.get("Felt");
         String unit = "°C";
-        if (!isCelsius) {
+        if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
             actualTemp = toFahrenheit(actualTemp);
             feltTemp = toFahrenheit(actualTemp);
             unit = "°F";
@@ -74,8 +77,18 @@ public class MainScreen extends JFrame {
         return celsiusTemp * 9. / 5. + 32;
     }
 
-    public void refresh() {
-        dataSliderListener();
+    private void setTemperatureDisplay() {
+        int displayTempTypes = settingScreen.getDisplayTemperatureTypes();
+        if (displayTempTypes == settingScreen.BOTH_TEMPERATURES) {
+            actualTempLabel.setVisible(true);
+            feltTempLabel.setVisible(true);
+        } else if (displayTempTypes == settingScreen.ACTUAL_TEMPERATURE) {
+            actualTempLabel.setVisible(true);
+            feltTempLabel.setVisible(false);
+        } else { // displayTempTypes == settingScreen.FELT_TEMPERATURE
+            actualTempLabel.setVisible(false);
+            feltTempLabel.setVisible(true);
+        }
     }
 
     public JPanel getMainPanel() {
