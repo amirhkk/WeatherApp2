@@ -25,12 +25,12 @@ public class Setting extends JFrame {
     private JPanel rainPanel;
     private JTextField rainTimeText;
 
-    final private int CELSIUS = 0;
-    final private int FAHRENHEIT = 1;
+    final public int CELSIUS = 0;
+    final public int FAHRENHEIT = 1;
 
-    final private int ACTUAL_TEMPERATURE = 0;
-    final private int FELT_TEMPERATURE = 1;
-    final private int BOTH_TEMPERATURES = 2;
+    final public int ACTUAL_TEMPERATURE = 0;
+    final public int FELT_TEMPERATURE = 1;
+    final public int BOTH_TEMPERATURES = 2;
 
     // NOTIFICATION SETTINGS
     private int extremeTemperatureHighC = 30; // units of Celsius
