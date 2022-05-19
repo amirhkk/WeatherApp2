@@ -12,6 +12,8 @@ public class MainScreen extends JFrame {
     private JLabel weatherIconLabel;
     private JLabel dateLabel;
     private JButton warningButton;
+    private JLabel feltTextLabel;
+    private JLabel actualTextLabel;
 
     private final Setting settingScreen;
     private final DateTimeFormatter dtfHourly;
@@ -58,10 +60,14 @@ public class MainScreen extends JFrame {
     }
 
     private TemperatureRecord<String> forecast(int timeIndex) {
-        Map<Weather, String> forecast = APIfetcher.getForecast(timeIndex);
+        /*Map<Weather, String> forecast = APIfetcher.getForecast(timeIndex);
         double actualTemp = Double.parseDouble(forecast.get(Weather.TEMP));
-        double feltTemp = Double.parseDouble(forecast.get(Weather.FELT));
+        double feltTemp = Double.parseDouble(forecast.get(Weather.FELT));*/
+        double actualTemp = 14.1;
+        double feltTemp = 14.0;
         String unit = "°C";
+        System.out.println(settingScreen.getTemperatureUnits());
+        System.out.println(settingScreen.getDisplayTemperatureTypes());
         if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
             actualTemp = toFahrenheit(actualTemp);
             feltTemp = toFahrenheit(actualTemp);
@@ -69,7 +75,8 @@ public class MainScreen extends JFrame {
         }
         actualTemp = Math.round(actualTemp * 10.0) / 10.0;
         feltTemp = Math.round(feltTemp * 10.0) / 10.0;
-        return new TemperatureRecord<>(actualTemp + unit, feltTemp + unit, forecast.get(Weather.ICON));
+        // return new TemperatureRecord<>(actualTemp + unit, feltTemp + unit, forecast.get(Weather.ICON));
+        return new TemperatureRecord<>(14.1 + unit, 14.0 + unit, "Warning");
     }
 
     private double toFahrenheit(double celsiusTemp) {
@@ -80,13 +87,19 @@ public class MainScreen extends JFrame {
         int displayTempTypes = settingScreen.getDisplayTemperatureTypes();
         if (displayTempTypes == settingScreen.BOTH_TEMPERATURES) {
             actualTempLabel.setVisible(true);
+            actualTextLabel.setVisible(true);
             feltTempLabel.setVisible(true);
+            feltTextLabel.setVisible(true);
         } else if (displayTempTypes == settingScreen.ACTUAL_TEMPERATURE) {
             actualTempLabel.setVisible(true);
+            actualTextLabel.setVisible(true);
             feltTempLabel.setVisible(false);
+            feltTextLabel.setVisible((false));
         } else { // displayTempTypes == settingScreen.FELT_TEMPERATURE
             actualTempLabel.setVisible(false);
+            actualTextLabel.setVisible(false);
             feltTempLabel.setVisible(true);
+            feltTextLabel.setVisible(true);
         }
     }
 

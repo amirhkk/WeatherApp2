@@ -18,7 +18,7 @@ public class APIfetcher {
 
     private APIfetcher(){
         try {
-            URL url = new URL("https://api.openweathermap.org/data/2.5/onecall?lat=52.205276&lon=0.119167&exclude=&appid=861bc7cd5c98494df6f104259f04fb3b");
+            URL url = new URL("https://api.openweathermap.org/data/2.5/onecall?lat=52.205276&lon=0.119167&exclude=&appid=82f52b4f99f73d57f10d55cb79abba32");
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
