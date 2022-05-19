@@ -35,12 +35,12 @@ public class Setting extends JFrame {
     private ButtonGroup tempUnitGroup = new ButtonGroup();
     private ButtonGroup displayTempGroup = new ButtonGroup();
 
-    final private int CELSIUS = 0;
-    final private int FAHRENHEIT = 1;
+    final public int CELSIUS = 0;
+    final public int FAHRENHEIT = 1;
 
-    final private int ACTUAL_TEMPERATURE = 0;
-    final private int FELT_TEMPERATURE = 1;
-    final private int BOTH_TEMPERATURES = 2;
+    final public int ACTUAL_TEMPERATURE = 0;
+    final public int FELT_TEMPERATURE = 1;
+    final public int BOTH_TEMPERATURES = 2;
 
     // NOTIFICATION SETTINGS
     private int extremeTemperatureHighC = 30; // units of Celsius
@@ -217,50 +217,71 @@ public class Setting extends JFrame {
         add(settingPanel);
     }
 
-    private boolean allSettingsSyncedWithUI() {
-        if (this.extremeTemperatureNotificationEnabled != tempCheckBox.isSelected()) {
-            return false;
+    private void syncSettingsWithUI() {
+        if (extremeTemperatureNotificationEnabled != tempCheckBox.isSelected()) {
+            extremeTemperatureNotificationEnabled = tempCheckBox.isSelected();
         }
-        if (this.extremePrecipitationNotificationsEnabled != precCheckBox.isSelected()) {
-            return false;
+        if (extremePrecipitationNotificationsEnabled != precCheckBox.isSelected()) {
+            extremePrecipitationNotificationsEnabled = precCheckBox.isSelected();
         }
-        if (this.imminentRainNotificationsEnabled != rainCheckBox.isSelected()) {
-            return false;
+        if (imminentRainNotificationsEnabled != rainCheckBox.isSelected()) {
+            imminentRainNotificationsEnabled = rainCheckBox.isSelected();
         }
-        if (this.stormWarningNotificationsEnabled != stormCheckBox.isSelected()) {
-            return false;
+        if (stormWarningNotificationsEnabled != stormCheckBox.isSelected()) {
+            stormWarningNotificationsEnabled = stormCheckBox.isSelected();
         }
-        return true;
+        if (temperatureUnits == CELSIUS) {
+            if (extremeTemperatureHighC != Integer.parseInt(maxTempText.getText())) {
+                extremeTemperatureHighC = Integer.parseInt(maxTempText.getText());
+            }
+            if (extremeTemperatureLowC != Integer.parseInt(minTempText.getText())) {
+                extremeTemperatureLowC = Integer.parseInt(minTempText.getText());
+            }
+        } else if (temperatureUnits == FAHRENHEIT) {
+            if (extremeTemperatureHighF != Integer.parseInt(maxTempText.getText())) {
+                extremeTemperatureHighF = Integer.parseInt(maxTempText.getText());
+            }
+            if (extremeTemperatureLowF != Integer.parseInt(minTempText.getText())) {
+                extremeTemperatureLowF = Integer.parseInt(minTempText.getText());
+            }
+        }
+        if (extremePrecipitation != Integer.parseInt(maxPrecText.getText())) {
+            extremePrecipitation = Integer.parseInt(maxPrecText.getText());
+        }
+        if (imminentRainTime != Integer.parseInt(rainTimeText.getText())) {
+            imminentRainTime = Integer.parseInt(rainTimeText.getText());
+        }
+        // TODO: add checks for temperature units and display temperature types
     }
 
     private void setNewExtremeHighTemperature(String newHigh) {
-        if (this.temperatureUnits == CELSIUS) {
+        if (temperatureUnits == CELSIUS) {
             try {
                 int parsed_newHigh = (int) (Double.parseDouble(newHigh) + 0.5);
                 if (parsed_newHigh > 35) {
                     parsed_newHigh = 35;
-                } else if (parsed_newHigh <= this.extremeTemperatureLowC) {
-                    parsed_newHigh = this.extremeTemperatureLowC + 1;
+                } else if (parsed_newHigh <= extremeTemperatureLowC) {
+                    parsed_newHigh = extremeTemperatureLowC + 1;
                 }
-                this.extremeTemperatureHighC = parsed_newHigh;
-                this.extremeTemperatureHighF = (int) (((double) parsed_newHigh) * 9.0 / 5.0 + 32.0 + 0.5);
-                this.maxTempText.setText("" + parsed_newHigh);
+                extremeTemperatureHighC = parsed_newHigh;
+                extremeTemperatureHighF = (int) (((double) parsed_newHigh) * 9.0 / 5.0 + 32.0 + 0.5);
+                maxTempText.setText("" + parsed_newHigh);
             } catch (NumberFormatException e) {
-                this.maxTempText.setText("" + this.extremeTemperatureHighC);
+                maxTempText.setText("" + extremeTemperatureHighC);
             }
-        } else if (this.temperatureUnits == FAHRENHEIT) {
+        } else if (temperatureUnits == FAHRENHEIT) {
             try {
                 int parsed_newHigh = (int) (Double.parseDouble(newHigh) + 0.5);
                 if (parsed_newHigh > 95) {
                     parsed_newHigh = 95;
-                } else if (parsed_newHigh <= this.extremeTemperatureLowF) {
-                    parsed_newHigh = this.extremeTemperatureLowF + 1;
+                } else if (parsed_newHigh <= extremeTemperatureLowF) {
+                    parsed_newHigh = extremeTemperatureLowF + 1;
                 }
-                this.extremeTemperatureHighF = parsed_newHigh;
-                this.extremeTemperatureHighC = (int) ((((double) parsed_newHigh) - 32.0) * 5.0 / 9.0 + 0.5);
-                this.maxTempText.setText("" + parsed_newHigh);
+                extremeTemperatureHighF = parsed_newHigh;
+                extremeTemperatureHighC = (int) ((((double) parsed_newHigh) - 32.0) * 5.0 / 9.0 + 0.5);
+                maxTempText.setText("" + parsed_newHigh);
             } catch (NumberFormatException e) {
-                this.maxTempText.setText("" + this.extremeTemperatureHighF);
+                maxTempText.setText("" + extremeTemperatureHighF);
             }
         }
     }
