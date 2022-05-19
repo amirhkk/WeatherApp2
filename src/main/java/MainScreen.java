@@ -62,7 +62,7 @@ public class MainScreen extends JFrame {
         double actualTemp = forecast.get("Actual");
         double feltTemp = forecast.get("Felt");
         String unit = "°C";
-        if (settingScreen.getTemperatureUnits() == 1) {
+        if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
             actualTemp = toFahrenheit(actualTemp);
             feltTemp = toFahrenheit(actualTemp);
             unit = "°F";
