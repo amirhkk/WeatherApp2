@@ -66,7 +66,7 @@ public class MainScreen extends JFrame {
         String unit = "°C";
         if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
             actualTemp = toFahrenheit(actualTemp);
-            feltTemp = toFahrenheit(actualTemp);
+            feltTemp = toFahrenheit(feltTemp);
             unit = "°F";
         }
         actualTemp = Math.round(actualTemp * 10.0) / 10.0;
