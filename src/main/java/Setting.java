@@ -1,5 +1,7 @@
 import javax.swing.*;
+import javax.swing.text.DateFormatter;
 import java.awt.event.*;
+import java.util.Calendar;
 
 public class Setting extends JFrame {
     private JLabel notiLabel;
@@ -32,6 +34,22 @@ public class Setting extends JFrame {
     private JRadioButton feltRadioButton;
     private JLabel tempUnitsLabel;
     private JLabel dispTempLabel;
+    private JCheckBox mondayCheckBox;
+    private JCheckBox tuesdayCheckBox;
+    private JCheckBox wednesdayCheckBox;
+    private JCheckBox thursdayCheckBox;
+    private JCheckBox fridayCheckBox;
+    private JCheckBox saturdayCheckBox;
+    private JCheckBox sundayCheckBox;
+    private JSpinner mondaySpinner;
+    private JSpinner tuesdaySpinner;
+    private JSpinner wednesdaySpinner;
+    private JSpinner thursdaySpinner;
+    private JSpinner fridaySpinner;
+    private JSpinner saturdaySpinner;
+    private JSpinner sundaySpinner;
+    private JLabel customNotiLabel;
+    private JPanel customNotiPanel;
     private ButtonGroup tempUnitGroup = new ButtonGroup();
     private ButtonGroup displayTempGroup = new ButtonGroup();
 
@@ -108,35 +126,22 @@ public class Setting extends JFrame {
         });
 
         cRadioButton.setSelected(true);
-        cRadioButton.addItemListener(e -> {
-            if(cRadioButton.isSelected()) {
-                toggleTemperatureUnits();
-            }
-        });
+        cRadioButton.addActionListener(e -> toggleTemperatureUnits());
+        fRadioButton.addActionListener(e -> toggleTemperatureUnits());
 
-        fRadioButton.addItemListener(e -> {
-            if(fRadioButton.isSelected()) {
-                toggleTemperatureUnits();
-            }
-        });
-
-        actualRadioButton.addItemListener(e -> {
-            if(actualRadioButton.isSelected()) {
-                toggleTemperatureDisplay(ACTUAL_TEMPERATURE);
-            }
-        });
-        feltRadioButton.addItemListener(e -> {
-            if(feltRadioButton.isSelected()) {
-                toggleTemperatureDisplay(FELT_TEMPERATURE);
-            }
-        });
-        bothRadioButton.addItemListener(e -> {
-            if(bothRadioButton.isSelected()) {
-                toggleTemperatureDisplay(BOTH_TEMPERATURES);
-            }
-        });
+        actualRadioButton.addActionListener(e -> toggleTemperatureDisplay(ACTUAL_TEMPERATURE));
+        feltRadioButton.addActionListener(e -> toggleTemperatureDisplay(FELT_TEMPERATURE));
+        bothRadioButton.addActionListener(e -> toggleTemperatureDisplay(BOTH_TEMPERATURES));
 
         setDefaultSettings();
+
+        createTimePickerSpinner(mondaySpinner);
+        createTimePickerSpinner(tuesdaySpinner);
+        createTimePickerSpinner(wednesdaySpinner);
+        createTimePickerSpinner(thursdaySpinner);
+        createTimePickerSpinner(fridaySpinner);
+        createTimePickerSpinner(saturdaySpinner);
+        createTimePickerSpinner(sundaySpinner);
 
         tempUnitGroup.add(cRadioButton);
         tempUnitGroup.add(fRadioButton);
@@ -144,12 +149,24 @@ public class Setting extends JFrame {
         displayTempGroup.add(actualRadioButton);
         displayTempGroup.add(feltRadioButton);
         displayTempGroup.add(bothRadioButton);
-
         bothRadioButton.setSelected(true);
+
         tempPanel.setVisible(false);
         precPanel.setVisible(false);
         rainPanel.setVisible(false);
+
         add(settingPanel);
+    }
+
+    private void createTimePickerSpinner(JSpinner spinner) {
+        SpinnerDateModel model = new SpinnerDateModel();
+        model.setCalendarField(Calendar.MINUTE);
+        spinner.setModel(model);
+        spinner.setEditor(new JSpinner.DateEditor(spinner, "HH:mm"));
+        JSpinner.DateEditor editor = (JSpinner.DateEditor) spinner.getEditor();
+        DateFormatter formatter = (DateFormatter)editor.getTextField().getFormatter();
+        formatter.setAllowsInvalid(false);
+        formatter.setOverwriteMode(true);
     }
 
     private void setDefaultSettings() {
