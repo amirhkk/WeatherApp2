@@ -2,13 +2,13 @@ import java.util.Map;
 
 public class Weather {
     // Actual temperature
-    private static Double temp;
+    private final Double temp;
     // Felt temperature
-    private static Double felt;
+    private final Double felt;
     // Icon png name
-    private static String icon;
+    private final String icon;
     // Map of alerts
-    private static Map<Alerts, Boolean> alerts;
+    private final Map<Alerts, Boolean> alerts;
 
     // Public constructor only way to set variables (except adding alerts)
     public Weather(Double temp, Double felt, String icon, Map<Alerts, Boolean> alerts) {
@@ -19,27 +19,32 @@ public class Weather {
     }
 
     // Public access to temp
-    public static Double getTemp() {
+    public Double getTemp() {
         return temp;
     }
 
     // Public access to felt
-    public static Double getFelt() {
+    public Double getFelt() {
         return felt;
     }
 
     // Public access to icon
-    public static String getIcon() {
+    public String getIcon() {
         return icon;
     }
 
     // Public access to alerts
-    public static Map<Alerts, Boolean> getAlerts() {
+    public Map<Alerts, Boolean> getAlerts() {
         return alerts;
     }
 
     // Public addition to alerts
-    public static void addAlert(Alerts alert, Boolean active) {
+    public void addAlert(Alerts alert, Boolean active) {
         alerts.put(alert, active);
+    }
+
+    // Conversion to Fahrenheit
+    public static double toFahrenheit(double celsiusTemp) {
+        return Math.round((celsiusTemp * 9. / 5. + 32) * 10.) / 10.;
     }
 }

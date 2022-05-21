@@ -23,6 +23,11 @@ public class APIfetcher {
 
     // Constructor called in update()
     private APIfetcher(){
+        update();
+    }
+
+    // Ensures data is up-to-date
+    private static void update(){
         try {
             // URL of API call
             URL url = new URL("https://api.openweathermap.org/data/2.5/onecall?" +
@@ -41,36 +46,31 @@ public class APIfetcher {
             String dataAsString = new BufferedReader(new InputStreamReader(url.openStream())).lines().collect(Collectors.joining("\n"));
 
             // Convert String to JSON object
-            this.json = JsonParser.parseString(dataAsString).getAsJsonObject();
+            json = JsonParser.parseString(dataAsString).getAsJsonObject();
 
             // Remember time of last API call to (later) prevent surpassing call limit
             TimeOfLastFetch = System.currentTimeMillis();
 
-        // Deal with IOException
+            // Deal with IOException
         } catch (IOException e) {
             // By printing stack trace
             e.printStackTrace();
         }
     }
 
-    // Ensures data is up-to-date
-    private static void update(){
-        currentData = new APIfetcher();
-    }
-
     // Returns current temperature
     private static Double getCurrentActualTemp(){
-        return Double.parseDouble(df.format(Double.parseDouble(currentData.json.getAsJsonObject("current").get("temp").getAsString()) - 273.15));
+        return Double.parseDouble(df.format(Double.parseDouble(json.getAsJsonObject("current").get("temp").getAsString()) - 273.15));
     }
 
     // Returns current felt temperature
     private static Double getCurrentFeltTemp(){
-        return Double.parseDouble(df.format(Double.parseDouble(currentData.json.getAsJsonObject("current").get("feels_like").getAsString()) - 273.15));
+        return Double.parseDouble(df.format(Double.parseDouble(json.getAsJsonObject("current").get("feels_like").getAsString()) - 273.15));
     }
 
     // Returns icon name for current weather
     private static String getCurrentIcon(){
-        return currentData.json.getAsJsonObject("current").getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString();
+        return json.getAsJsonObject("current").getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString();
     }
 
     // Returns current weather (and empty alerts map)
@@ -84,18 +84,18 @@ public class APIfetcher {
 
     // Returns weather for a certain hour (0-48) (and empty alerts map)
     private static Weather getWeatherAtHour(int hour){
-        Double actual = Double.parseDouble(df.format(Double.parseDouble(currentData.json.getAsJsonArray("hourly").get(hour).getAsJsonObject().get("temp").getAsString()) - 273.15));
-        Double felt = Double.parseDouble(df.format(Double.parseDouble(currentData.json.getAsJsonArray("hourly").get(hour).getAsJsonObject().get("feels_like").getAsString()) - 273.15));
-        String icon = currentData.json.getAsJsonArray("hourly").get(hour).getAsJsonObject().getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString();
+        Double actual = Double.parseDouble(df.format(Double.parseDouble(json.getAsJsonArray("hourly").get(hour).getAsJsonObject().get("temp").getAsString()) - 273.15));
+        Double felt = Double.parseDouble(df.format(Double.parseDouble(json.getAsJsonArray("hourly").get(hour).getAsJsonObject().get("feels_like").getAsString()) - 273.15));
+        String icon = json.getAsJsonArray("hourly").get(hour).getAsJsonObject().getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString();
 
         return new Weather(actual, felt, icon, new HashMap<>());
     }
 
     // Returns daytime weather for a certain day (0-7) (and empty alerts map)
     private static Weather getWeatherAtDay(int day){
-        Double actual = Double.parseDouble(df.format(Double.parseDouble(currentData.json.getAsJsonArray("daily").get(day).getAsJsonObject().getAsJsonObject("temp").get("day").getAsString()) - 273.15));
-        Double felt = Double.parseDouble(df.format(Double.parseDouble(currentData.json.getAsJsonArray("daily").get(day).getAsJsonObject().getAsJsonObject("feels_like").get("day").getAsString()) - 273.15));
-        String icon = currentData.json.getAsJsonArray("daily").get(day).getAsJsonObject().getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString();
+        Double actual = Double.parseDouble(df.format(Double.parseDouble(json.getAsJsonArray("daily").get(day).getAsJsonObject().getAsJsonObject("temp").get("day").getAsString()) - 273.15));
+        Double felt = Double.parseDouble(df.format(Double.parseDouble(json.getAsJsonArray("daily").get(day).getAsJsonObject().getAsJsonObject("feels_like").get("day").getAsString()) - 273.15));
+        String icon = json.getAsJsonArray("daily").get(day).getAsJsonObject().getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString();
 
         return new Weather(actual, felt, icon, new HashMap<>());
     }
@@ -127,8 +127,12 @@ public class APIfetcher {
         }
         // Add alerts to alerts map
         // True if enabled and conditions are fulfilled
-        result.addAlert(Alerts.HIGHTEMP,setting.isExtremeTemperatureNotificationEnabled() && result.getTemp()>setting.getExtremeTemperatureHigh());
-        result.addAlert(Alerts.LOWTEMP,setting.isExtremeTemperatureNotificationEnabled() && result.getTemp()<setting.getExtremeTemperatureLow());
+        result.addAlert(Alerts.HIGHTEMP,
+                setting.isExtremeTemperatureNotificationEnabled() && result.getTemp()>setting.getExtremeTemperatureHigh()
+        );
+        result.addAlert(Alerts.LOWTEMP,
+                setting.isExtremeTemperatureNotificationEnabled() && result.getTemp()<setting.getExtremeTemperatureLow()
+        );
         return result;
     }
 }

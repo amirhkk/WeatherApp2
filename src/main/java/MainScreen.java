@@ -71,18 +71,11 @@ public class MainScreen extends JFrame {
         double feltTemp = forecast.getFelt();
         String unit = "°C";
         if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
-            actualTemp = toFahrenheit(actualTemp);
-            feltTemp = toFahrenheit(feltTemp);
+            actualTemp = Weather.toFahrenheit(actualTemp);
+            feltTemp = Weather.toFahrenheit(feltTemp);
             unit = "°F";
         }
-        // Pretty sure this does nothing as we return 1dp in forecast.getTemp() but not sure enough to delete it myself
-        actualTemp = Math.round(actualTemp * 10.0) / 10.0;
-        feltTemp = Math.round(feltTemp * 10.0) / 10.0;
         return new WeatherRecord<>(actualTemp + unit, feltTemp + unit, forecast.getIcon());
-    }
-
-    private double toFahrenheit(double celsiusTemp) {
-        return celsiusTemp * 9. / 5. + 32;
     }
 
     private void setTemperatureDisplay() {
