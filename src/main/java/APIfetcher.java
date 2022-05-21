@@ -1,3 +1,4 @@
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -75,8 +76,9 @@ public class APIfetcher {
         Double actual = getCurrentActualTemp();
         Double felt = getCurrentFeltTemp();
         String icon = getCurrentIcon(); // currentData.json.getAsJsonObject("current").getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString();
+        Double rain = getRainNextHour();
 
-        return new Weather(actual, felt, icon, new HashMap<>());
+        return new Weather(actual, felt, icon, rain, new HashMap<>());
     }
 
     // Returns weather for a certain hour (0-48) (and empty alerts map)
@@ -84,8 +86,9 @@ public class APIfetcher {
         Double actual = Double.parseDouble(df.format(Double.parseDouble(json.getAsJsonArray("hourly").get(hour).getAsJsonObject().get("temp").getAsString()) - 273.15));
         Double felt = Double.parseDouble(df.format(Double.parseDouble(json.getAsJsonArray("hourly").get(hour).getAsJsonObject().get("feels_like").getAsString()) - 273.15));
         String icon = json.getAsJsonArray("hourly").get(hour).getAsJsonObject().getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString();
+        Double rain = getRainNextHour();
 
-        return new Weather(actual, felt, icon, new HashMap<>());
+        return new Weather(actual, felt, icon, rain, new HashMap<>());
     }
 
     // Returns daytime weather for a certain day (0-7) (and empty alerts map)
@@ -93,9 +96,25 @@ public class APIfetcher {
         Double actual = Double.parseDouble(df.format(Double.parseDouble(json.getAsJsonArray("daily").get(day).getAsJsonObject().getAsJsonObject("temp").get("day").getAsString()) - 273.15));
         Double felt = Double.parseDouble(df.format(Double.parseDouble(json.getAsJsonArray("daily").get(day).getAsJsonObject().getAsJsonObject("feels_like").get("day").getAsString()) - 273.15));
         String icon = json.getAsJsonArray("daily").get(day).getAsJsonObject().getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString();
+        Double rain = getRainNextHour();
 
-        return new Weather(actual, felt, icon, new HashMap<>());
+        return new Weather(actual, felt, icon, rain, new HashMap<>());
     }
+    public static Double getRainAtDay(int day){
+        JsonElement rainInMM = json.getAsJsonArray("daily").get(day).getAsJsonObject().get("rain");
+        if (rainInMM == null) { // rain field will only exist if there is rain!
+            return 0.0;
+        }
+        return rainInMM.getAsDouble();
+    }
+    private static Double getRainNextHour(){
+        JsonElement rainInMM = json.getAsJsonArray("hourly").get(1).getAsJsonObject().get("rain");
+        if (rainInMM == null) { // rain field will only exist if there is rain!
+            return 0.0;
+        }
+        return rainInMM.getAsDouble();
+    }
+
 
     // 0: current
     // 1-47: next two days hourly (always full hour, so like 1pm, 2pm etc.)
@@ -130,6 +149,7 @@ public class APIfetcher {
         result.addAlert(Alerts.LOWTEMP,
                 setting.isExtremeTemperatureNotificationEnabled() && result.getTemp()<setting.getExtremeTemperatureLow()
         );
+        //result.addAlert(Alerts.) Rain alert
         return result;
     }
 }

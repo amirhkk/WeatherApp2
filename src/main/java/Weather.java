@@ -7,14 +7,17 @@ public class Weather {
     private final Double felt;
     // Icon png name
     private final String icon;
+    // rain in mm
+    private final Double rain;
     // Map of alerts
     private final Map<Alerts, Boolean> alerts;
 
     // Public constructor only way to set variables (except adding alerts)
-    public Weather(Double temp, Double felt, String icon, Map<Alerts, Boolean> alerts) {
+    public Weather(Double temp, Double felt, String icon, Double rain, Map<Alerts, Boolean> alerts) {
         this.temp = temp;
         this.felt = felt;
         this.icon = icon;
+        this.rain = rain;
         this.alerts = alerts;
     }
 
@@ -31,6 +34,11 @@ public class Weather {
     // Public access to icon
     public String getIcon() {
         return icon;
+    }
+
+    // Public access to rain
+    public double getRain(){
+        return rain;
     }
 
     // Public access to alerts
