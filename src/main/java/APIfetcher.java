@@ -143,15 +143,17 @@ public class APIfetcher {
         }
         // Add alerts to alerts map
         // True if enabled and conditions are fulfilled
-        result.addAlert(Alerts.HIGHTEMP,
+        result.addAlert(
+                Alerts.HIGH_TEMP,
                 setting.isExtremeTemperatureNotificationEnabled() && result.getTemp() >= setting.getExtremeTemperatureHigh()
         );
-        result.addAlert(Alerts.LOWTEMP,
+        result.addAlert(Alerts.LOW_TEMP,
                 setting.isExtremeTemperatureNotificationEnabled() && result.getTemp() <= setting.getExtremeTemperatureLow()
         );
-        result.addAlert(Alerts.RAIN,
+        result.addAlert(Alerts.HEAVY_RAIN,
                 setting.isExtremePrecipitationNotificationsEnabled() && result.getRain() >= setting.getExtremePrecipitation()
         );
+        result.addAlert(Alerts.RAIN_SOON, setting.isImminentRainNotificationsEnabled() && result.getRain() > 0);
         return result;
     }
 }

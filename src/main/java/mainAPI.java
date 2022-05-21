@@ -10,7 +10,7 @@ public class mainAPI{
         System.out.println("extreme temp alerts active: " + setting.isExtremeTemperatureNotificationEnabled());
         System.out.println("extreme temp high: " + setting.getExtremeTemperatureHigh());
         System.out.println("current temp: " + curr.getTemp());
-        System.out.println("extreme temp high alert: " + curr.getAlerts().get(Alerts.HIGHTEMP));
+        System.out.println("extreme temp high alert: " + curr.getAlerts().get(Alerts.HIGH_TEMP));
         System.out.println(APIfetcher.getRainAtDay(0));
         System.out.println(curr.getRain());
     }

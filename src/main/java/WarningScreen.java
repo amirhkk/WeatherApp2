@@ -25,7 +25,7 @@ public class WarningScreen extends JFrame {
 
         warningTextArea.setForeground(new Color(187, 31, 65));
 
-        if (alerts.get(Alerts.HIGHTEMP) || alerts.get(Alerts.LOWTEMP)) {
+        if (alerts.get(Alerts.HIGH_TEMP) || alerts.get(Alerts.LOW_TEMP)) {
             double actualTemp = forecast.getTemp();
             String unit = "°C";
             if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
@@ -35,12 +35,14 @@ public class WarningScreen extends JFrame {
             stringBuilder.append("\nExtreme temperatures (").append(actualTemp).append(unit).append(") within the next hour.\n");
             warningTextArea.setText(stringBuilder.toString());
         }
-        if (alerts.get(Alerts.RAIN)) {
+        if (alerts.get(Alerts.HEAVY_RAIN)) {
             stringBuilder.append("\nHeavy rain (").append(forecast.getRain()).append(" mm/h) within the next hour. \n");
+        } else if (alerts.get(Alerts.RAIN_SOON)) {
+            stringBuilder.append("\nRain (").append(forecast.getRain()).append(" mm/h) within the next hour. \n");
         }
 
         if (stringBuilder.length() == 0) {
-            stringBuilder.append("\nNo temperature warnings.\n");
+            stringBuilder.append("\nNo weather warnings.\n");
             warningTextArea.setForeground(new Color(55, 140, 84));
         }
 

@@ -1,6 +1,7 @@
 // Enum listing types of alerts
 public enum Alerts {
-    HIGHTEMP, // Extreme high temperature
-    LOWTEMP, // Extreme low temperature
-    RAIN // Extreme precipitation
+    HIGH_TEMP, // Extreme high temperature
+    LOW_TEMP, // Extreme low temperature
+    HEAVY_RAIN, // Extreme precipitation
+    RAIN_SOON // Imminent rain
 }
