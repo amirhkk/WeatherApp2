@@ -11,9 +11,6 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 
 public class APIfetcher {
-
-    // Singleton pattern - only ever one APIfetcher in focus
-    private static APIfetcher currentData;
     // API response in JSON format
     private static JsonObject json;
     // Number format for Double values
