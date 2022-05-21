@@ -89,7 +89,7 @@
         </constraints>
         <properties>
           <foreground color="-65536"/>
-          <text value="Warning!"/>
+          <text value="Warnings"/>
         </properties>
       </component>
       <component id="46ba7" class="javax.swing.JLabel" binding="actualTextLabel">

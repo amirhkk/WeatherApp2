@@ -5,10 +5,12 @@ public class WarningScreen extends JFrame {
     private JScrollPane warningScrollPane;
     private JButton exitButton;
     private JPanel warningPanel;
+    private final Setting settingScreen;
 
-    public WarningScreen(RootScreen parent) {
-        warningTextArea.setText("Placeholder Warning");
+    public WarningScreen(RootScreen parent, Setting settingScreen) {
+        this.settingScreen = settingScreen;
         exitButton.addActionListener(e -> parent.goMain());
+        refresh();
     }
 
     public JPanel getWarningPanel() {
@@ -16,6 +18,8 @@ public class WarningScreen extends JFrame {
     }
 
     public void refresh() {
-        warningTextArea.setText("Refreshed Placeholder Warning");
+        if (settingScreen.isExtremePrecipitationNotificationsEnabled()) {
+            warningTextArea.setText("Extreme Precipitation Warning!");
+        }
     }
 }

@@ -11,8 +11,8 @@ public class RootScreen extends JFrame{
     public RootScreen() {
         setSize(450, 700);
         layout = (CardLayout) rootPanel.getLayout();
-        warningScreen = new WarningScreen(this);
         settingScreen = new Setting(this);
+        warningScreen = new WarningScreen(this, settingScreen);
         mainScreen= new MainScreen(this, settingScreen);
 
         rootPanel.add("mainPanel", mainScreen.getMainPanel());
