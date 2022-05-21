@@ -47,7 +47,7 @@ public class MainScreen extends JFrame {
         }
         WeatherRecord<String> weatherRecord = forecast(value);
         actualTempLabel.setText(weatherRecord.actualTemp());
-        feltTempLabel.setText(weatherRecord.feltTemp());
+        feltTempLabel.setText(" " + weatherRecord.feltTemp());
         setTemperatureDisplay();
 
         weatherIconLabel.setIcon(getWeatherIcon(weatherRecord.icon()));
