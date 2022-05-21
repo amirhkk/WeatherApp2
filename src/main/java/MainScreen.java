@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 public class MainScreen extends JFrame {
     private JPanel mainPanel;
@@ -67,18 +66,19 @@ public class MainScreen extends JFrame {
     }
 
     private WeatherRecord<String> forecast(int timeIndex) {
-        Map<Weather, String> forecast = APIfetcher.getForecast(timeIndex);
-        double actualTemp = Double.parseDouble(forecast.get(Weather.TEMP));
-        double feltTemp = Double.parseDouble(forecast.get(Weather.FELT));
+        Weather forecast = APIfetcher.getForecast(timeIndex, settingScreen);
+        double actualTemp = forecast.getTemp();
+        double feltTemp = forecast.getFelt();
         String unit = "°C";
         if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
             actualTemp = toFahrenheit(actualTemp);
             feltTemp = toFahrenheit(feltTemp);
             unit = "°F";
         }
+        // Pretty sure this does nothing as we return 1dp in forecast.getTemp() but not sure enough to delete it myself
         actualTemp = Math.round(actualTemp * 10.0) / 10.0;
         feltTemp = Math.round(feltTemp * 10.0) / 10.0;
-        return new WeatherRecord<>(actualTemp + unit, feltTemp + unit, forecast.get(Weather.ICON));
+        return new WeatherRecord<>(actualTemp + unit, feltTemp + unit, forecast.getIcon());
     }
 
     private double toFahrenheit(double celsiusTemp) {

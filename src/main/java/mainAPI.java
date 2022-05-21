@@ -1,15 +1,15 @@
-import java.util.Map;
-
 public class mainAPI{
     public static void main(String[] args) {
-        Map<Weather, String> curr = APIfetcher.getForecast(0); // test current
-        Map<Weather, String> hourly = APIfetcher.getForecast(1); // test hourly
-        Map<Weather, String> daily = APIfetcher.getForecast(48); // test dailyu
+        Setting setting = new Setting(new RootScreen());
+        // Need to temporarily make methods public to test with next 2 lines
+        //setting.toggleExtremeTemperatureNotifications();
+        //setting.setNewExtremeHighTemperature("10");
 
-        System.out.println(curr.get(Weather.TEMP));
-        System.out.println(curr.get(Weather.ICON));
-        System.out.println(hourly.get(Weather.TEMP));
-        System.out.println(daily.get(Weather.TEMP));
+        Weather curr = APIfetcher.getForecast(0, setting); // test current
 
+        System.out.println("extreme temp alerts active: " + setting.isExtremeTemperatureNotificationEnabled());
+        System.out.println("extreme temp high: " + setting.getExtremeTemperatureHigh());
+        System.out.println("current temp: " + curr.getTemp());
+        System.out.println("extreme temp high alert: " + curr.getAlerts().get(Alerts.HIGHTEMP));
     }
 }
