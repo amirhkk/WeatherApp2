@@ -5,7 +5,6 @@ import java.util.Map;
 public class WarningScreen extends JFrame {
     private JButton exitButton;
     private JPanel warningPanel;
-    private JLabel precipitationWarningLabel;
     private JTextArea warningTextArea;
     private final Setting settingScreen;
 
