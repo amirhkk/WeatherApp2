@@ -282,7 +282,7 @@ public class Setting extends JFrame {
         try {
             int parsed_precipitation = (int) (Double.parseDouble(precipitation) + 0.5);
             if (parsed_precipitation < 1) {
-                parsed_precipitation = 1;
+                parsed_precipitation = 0;
             } else if (parsed_precipitation > 60) {
                 parsed_precipitation = 60;
             }
