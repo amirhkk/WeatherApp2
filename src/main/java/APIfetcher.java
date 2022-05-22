@@ -19,7 +19,7 @@ public class APIfetcher {
     // Time of last API call
     private static long TimeOfLastFetch;
 
-    // Constructor called in update()
+    // Constructor calls update()
     private APIfetcher(){
         update();
     }
