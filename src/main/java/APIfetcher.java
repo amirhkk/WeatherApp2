@@ -23,41 +23,44 @@ public class APIfetcher {
 
     // Ensures data is up-to-date
     private static void update(){
-        try {
-            // URL of API call
-            URL url = new URL("https://api.openweathermap.org/data/2.5/onecall?" +
-                    "lat=52.205276&lon=0.119167" + // Cambridge global co-ordinates
-                    "&appid=82f52b4f99f73d57f10d55cb79abba32"); // API key
+        // Only update every 15 minutes at most
+        if (System.currentTimeMillis() - TimeOfLastFetch > 900000) {
+            try {
+                // URL of API call
+                URL url = new URL("https://api.openweathermap.org/data/2.5/onecall?" +
+                        "lat=52.205276&lon=0.119167" + // Cambridge global co-ordinates
+                        "&appid=82f52b4f99f73d57f10d55cb79abba32"); // API key
 
-            // Make connection to URL
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                // Make connection to URL
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            // Deal with erroneous connection
-            if (connection.getResponseCode() != 200) { // 200 means no error
-                throw new RuntimeException("There is an issue with the API connection :/");
+                // Deal with erroneous connection
+                if (connection.getResponseCode() != 200) { // 200 means no error
+                    throw new RuntimeException("There is an issue with the API connection :/");
+                }
+
+                // Set connectionSuccess to true after checking that the API connection works
+                connectionSuccess = true;
+
+                // Convert response to one long String
+                String dataAsString = new BufferedReader(new InputStreamReader(url.openStream())).lines().collect(Collectors.joining("\n"));
+
+                // Convert String to JSON object
+                json = JsonParser.parseString(dataAsString).getAsJsonObject();
+
+                // Remember time of last API call to (later) prevent surpassing call limit
+                TimeOfLastFetch = System.currentTimeMillis();
+
+                // Deal with RuntimeException
+            } catch (RuntimeException e) {
+                connectionSuccess = false;
+                e.printStackTrace();
+
+                // Deal with IOException
+            } catch (IOException e) {
+                // By printing stack trace
+                e.printStackTrace();
             }
-
-            // Set connectionSuccess to true after checking that the API connection works
-            connectionSuccess = true;
-
-            // Convert response to one long String
-            String dataAsString = new BufferedReader(new InputStreamReader(url.openStream())).lines().collect(Collectors.joining("\n"));
-
-            // Convert String to JSON object
-            json = JsonParser.parseString(dataAsString).getAsJsonObject();
-
-            // Remember time of last API call to (later) prevent surpassing call limit
-            TimeOfLastFetch = System.currentTimeMillis();
-
-            // Deal with RuntimeException
-        } catch (RuntimeException e) {
-            connectionSuccess = false;
-            e.printStackTrace();
-
-            // Deal with IOException
-        } catch (IOException e) {
-            // By printing stack trace
-            e.printStackTrace();
         }
     }
 
@@ -126,10 +129,7 @@ public class APIfetcher {
     }
 
     public static boolean establishConnection() {
-        // Only update every 15 minutes at most
-        if (System.currentTimeMillis() - TimeOfLastFetch > 900000) {
-            update();
-        }
+        update();
         return connectionSuccess;
     }
 
