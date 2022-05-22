@@ -21,11 +21,6 @@ public class APIfetcher {
     // Error status
     private static boolean error;
 
-    // Constructor calls update()
-    private APIfetcher(){
-        update();
-    }
-
     // Ensures data is up-to-date
     private static void update(){
         try {
@@ -174,7 +169,9 @@ public class APIfetcher {
     }
 
     public static boolean hasError() {
-        update();
+        if (System.currentTimeMillis() - TimeOfLastFetch > 900000) {
+            update();
+        }
         return error;
     }
 }
