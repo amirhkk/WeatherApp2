@@ -66,6 +66,8 @@ public class MainScreen extends JFrame {
                 .getImage().getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
     }
 
+    private record WeatherRecord<T>(T actualTemp, T feltTemp, T icon) {}
+
     private WeatherRecord<String> forecast(int timeIndex) {
         Weather forecast = APIfetcher.getForecast(timeIndex, settingScreen);
         setWarningDisplay(forecast);
