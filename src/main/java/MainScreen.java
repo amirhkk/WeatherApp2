@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MainScreen extends JFrame {
@@ -16,17 +17,15 @@ public class MainScreen extends JFrame {
     private JLabel actualTextLabel;
 
     private final Setting settingScreen;
-    private final DateTimeFormatter dtfHourly;
-    private final DateTimeFormatter dtfDaily;
+
+    private final DateTimeFormatter dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
+    private final DateTimeFormatter dtfDaily = DateTimeFormatter.ofPattern("MM/dd");
 
     public MainScreen(RootScreen parent, Setting settingScreen) {
         setSize(450, 700);
         this.settingScreen = settingScreen;
 
         setButtonIcon(settingsButton, "gear");
-
-        this.dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
-        this.dtfDaily = DateTimeFormatter.ofPattern("MM/dd");
 
         dateSlider.addChangeListener(e -> refresh());
         settingsButton.addActionListener(e -> parent.goSetting());
@@ -103,11 +102,14 @@ public class MainScreen extends JFrame {
     private void setWarningDisplay(Weather forecast) {
         Map<Alerts, Boolean> alerts = forecast.getAlerts();
         StringBuilder stringBuilder = new StringBuilder();
-        if (alerts.get(Alerts.RAIN_SOON)) {
-            stringBuilder.append("☔");
+        if (alerts.get(Alerts.STORM_SOON)) {
+            stringBuilder.append("\uD83C\uDF29️");
         }
         if (alerts.get(Alerts.HEAVY_RAIN)) {
-            stringBuilder.append("⛈");
+            stringBuilder.append("\uD83C\uDF27️");
+        }
+        if (alerts.get(Alerts.RAIN_SOON)) {
+            stringBuilder.append("☂️");
         }
         if (alerts.get(Alerts.HIGH_TEMP)) {
             stringBuilder.append("\uD83D\uDD25");

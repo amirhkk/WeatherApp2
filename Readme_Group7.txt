@@ -23,8 +23,9 @@ The app is run from `Main.java`
 - The slider may be used to look at hourly forecasts for up to 48 hours and daily forecast for up to a week.
 - The settings button at the top leads to the Settings page.
 - When a weather warning is issued, a warning will appear below the settings button with the following possible emojis:
-    - ☔: Imminent rain
-    - ⛈: Heavy rain
+    - 🌩️: Thunderstorm
+    - 🌧️: Heavy rain
+    - ☂: Imminent rain
     - 🔥: Extreme high temperature
     - ❄: Extreme low temperature
 - The warning may be clicked to enter the Warning page, which shows greater detail on the warning issued.

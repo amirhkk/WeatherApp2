@@ -125,6 +125,11 @@ public class APIfetcher {
         return rainInMM.getAsDouble();
     }
 
+    private static boolean willStormNextHour() {
+        int weatherId = json.getAsJsonArray("hourly").get(1).getAsJsonObject().getAsJsonArray("weather").get(0).getAsJsonObject().get("id").getAsInt();
+        return weatherId % 100 == 2; // Thunderstorm codes are 2XX
+    }
+
 
     // 0: current
     // 1-47: next two days hourly (always full hour, so like 1pm, 2pm etc.)
@@ -164,6 +169,7 @@ public class APIfetcher {
                 setting.isExtremePrecipitationNotificationsEnabled() && result.getRain() >= setting.getExtremePrecipitation()
         );
         result.addAlert(Alerts.RAIN_SOON, setting.isImminentRainNotificationsEnabled() && result.getRain() > 0);
+        result.addAlert(Alerts.STORM_SOON, setting.isStormWarningNotificationsEnabled() && willStormNextHour());
         return result;
     }
 
