@@ -130,9 +130,9 @@ public class APIfetcher {
     // 1-47: next two days hourly (always full hour, so like 1pm, 2pm etc.)
     // 48-52: next week daily (excluding next 48 hrs) (always gives the temperature for daytime!)
     public static Weather getForecast(int timeIndex, Setting setting) {
-        // Only update every 15 minutes at most, or if error is currently true
-        if (error || System.currentTimeMillis() - TimeOfLastFetch > 900000) {
-            APIfetcher.update();
+        // Only update every 15 minutes at most
+        if (System.currentTimeMillis() - TimeOfLastFetch > 900000) {
+            update();
         }
 
         // TODO: make custom checked exception for the hour issues
@@ -168,6 +168,7 @@ public class APIfetcher {
     }
 
     public static boolean hasError() {
+        update();
         return error;
     }
 }
