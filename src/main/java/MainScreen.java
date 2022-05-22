@@ -107,7 +107,7 @@ public class MainScreen extends JFrame {
             stringBuilder.append("☔");
         }
         if (alerts.get(Alerts.HEAVY_RAIN)) {
-            stringBuilder.append("🌧️");
+            stringBuilder.append("⛈");
         }
         if (alerts.get(Alerts.HIGH_TEMP)) {
             stringBuilder.append("\uD83D\uDD25");
