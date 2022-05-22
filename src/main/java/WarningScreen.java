@@ -36,9 +36,9 @@ public class WarningScreen extends JFrame {
             warningTextArea.setText(stringBuilder.toString());
         }
         if (alerts.get(Alerts.HEAVY_RAIN)) {
-            stringBuilder.append("\nHeavy rain (").append(forecast.getRain()).append(" mm/h) within the next hour. \n");
+            stringBuilder.append("\nHeavy rain (").append(forecast.getRain()).append(" mm/h) within the next hour.\n");
         } else if (alerts.get(Alerts.RAIN_SOON)) {
-            stringBuilder.append("\nRain (").append(forecast.getRain()).append(" mm/h) within the next hour. \n");
+            stringBuilder.append("\nRain (").append(forecast.getRain()).append(" mm/h) within the next hour.\n");
         }
 
         if (stringBuilder.length() == 0) {

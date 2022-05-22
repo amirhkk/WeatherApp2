@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 public class MainScreen extends JFrame {
     private JPanel mainPanel;
@@ -75,6 +76,29 @@ public class MainScreen extends JFrame {
             feltTemp = Weather.toFahrenheit(feltTemp);
             unit = "°F";
         }
+
+        Map<Alerts, Boolean> alerts = forecast.getAlerts();
+        StringBuilder stringBuilder = new StringBuilder();
+        if (alerts.get(Alerts.RAIN_SOON)) {
+            stringBuilder.append("☔");
+        }
+        if (alerts.get(Alerts.HEAVY_RAIN)) {
+            stringBuilder.append("🌧️");
+        }
+        if (alerts.get(Alerts.HIGH_TEMP)) {
+            stringBuilder.append("\uD83D\uDD25");
+        }
+        if (alerts.get(Alerts.LOW_TEMP)) {
+            stringBuilder.append("❄");
+        }
+
+        if (stringBuilder.length() == 0) {
+            warningButton.setVisible(false);
+        } else {
+            warningButton.setText("Warnings: "+ stringBuilder);
+            warningButton.setVisible(true);
+        }
+
         return new WeatherRecord<>(actualTemp + unit, feltTemp + unit, forecast.getIcon());
     }
 
