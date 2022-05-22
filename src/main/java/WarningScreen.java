@@ -19,33 +19,38 @@ public class WarningScreen extends JFrame {
     }
 
     public void refresh() {
-        Weather forecast = APIfetcher.getForecast(1, settingScreen);
-        Map<Alerts, Boolean> alerts = forecast.getAlerts();
-        StringBuilder stringBuilder = new StringBuilder();
+        if (!APIfetcher.hasError()) {
+            Weather forecast = APIfetcher.getForecast(1, settingScreen);
+            Map<Alerts, Boolean> alerts = forecast.getAlerts();
+            StringBuilder stringBuilder = new StringBuilder();
 
-        warningTextArea.setForeground(new Color(187, 31, 65));
+            warningTextArea.setForeground(new Color(187, 31, 65));
 
-        if (alerts.get(Alerts.STORM_SOON)) {
-            stringBuilder.append("\nThunderstorm warning.\n");
-        }
-
-        if (alerts.get(Alerts.HEAVY_RAIN)) {
-            stringBuilder.append("\nHeavy rain (").append(forecast.getRain()).append(" mm/h) within the next hour.\n");
-        } else if (alerts.get(Alerts.RAIN_SOON)) {
-            stringBuilder.append("\nRain (").append(forecast.getRain()).append(" mm/h) within the next hour.\n");
-        }
-
-        if (alerts.get(Alerts.HIGH_TEMP) || alerts.get(Alerts.LOW_TEMP)) {
-            double actualTemp = forecast.getTemp();
-            String unit = "°C";
-            if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
-                actualTemp = Weather.toFahrenheit(actualTemp);
-                unit = "°F";
+            if (alerts.get(Alerts.STORM_SOON)) {
+                stringBuilder.append("\nThunderstorm warning.\n");
             }
-            stringBuilder.append("\nExtreme temperatures (").append(actualTemp).append(unit).append(") within the next hour.\n");
+
+            if (alerts.get(Alerts.HEAVY_RAIN)) {
+                stringBuilder.append("\nHeavy rain (").append(forecast.getRain()).append(" mm/h) within the next hour.\n");
+            } else if (alerts.get(Alerts.RAIN_SOON)) {
+                stringBuilder.append("\nRain (").append(forecast.getRain()).append(" mm/h) within the next hour.\n");
+            }
+
+            if (alerts.get(Alerts.HIGH_TEMP) || alerts.get(Alerts.LOW_TEMP)) {
+                double actualTemp = forecast.getTemp();
+                String unit = "°C";
+                if (settingScreen.getTemperatureUnits() == settingScreen.FAHRENHEIT) {
+                    actualTemp = Weather.toFahrenheit(actualTemp);
+                    unit = "°F";
+                }
+                stringBuilder.append("\nExtreme temperatures (").append(actualTemp).append(unit).append(") within the next hour.\n");
+                warningTextArea.setText(stringBuilder.toString());
+            }
+
             warningTextArea.setText(stringBuilder.toString());
+        } else {
+            warningTextArea.setText("");
         }
 
-        warningTextArea.setText(stringBuilder.toString());
     }
 }
