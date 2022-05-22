@@ -18,8 +18,8 @@ public class APIfetcher {
     private static final DecimalFormat df = new DecimalFormat("0.0");
     // Time of last API call
     private static long TimeOfLastFetch;
-    // Error status
-    private static boolean error;
+    // Connection status
+    private static boolean connectionSuccess;
 
     // Ensures data is up-to-date
     private static void update(){
@@ -37,8 +37,8 @@ public class APIfetcher {
                 throw new RuntimeException("There is an issue with the API connection :/");
             }
 
-            // Set error to false after checking that the API connection works
-            error = false;
+            // Set connectionSuccess to true after checking that the API connection works
+            connectionSuccess = true;
 
             // Convert response to one long String
             String dataAsString = new BufferedReader(new InputStreamReader(url.openStream())).lines().collect(Collectors.joining("\n"));
@@ -51,7 +51,7 @@ public class APIfetcher {
 
             // Deal with RuntimeException
         } catch (RuntimeException e) {
-            error = true;
+            connectionSuccess = false;
             e.printStackTrace();
 
             // Deal with IOException
@@ -125,16 +125,19 @@ public class APIfetcher {
         return weatherId % 100 == 2; // Thunderstorm codes are 2XX
     }
 
+    public static boolean establishConnection() {
+        // Only update every 15 minutes at most
+        if (System.currentTimeMillis() - TimeOfLastFetch > 900000) {
+            update();
+        }
+        return connectionSuccess;
+    }
+
 
     // 0: current
     // 1-47: next two days hourly (always full hour, so like 1pm, 2pm etc.)
     // 48-52: next week daily (excluding next 48 hrs) (always gives the temperature for daytime!)
     public static Weather getForecast(int timeIndex, Setting setting) {
-        // Only update every 15 minutes at most
-        if (System.currentTimeMillis() - TimeOfLastFetch > 900000) {
-            update();
-        }
-
         // TODO: make custom checked exception for the hour issues
         // Create object to return
         Weather result;
@@ -166,12 +169,5 @@ public class APIfetcher {
         result.addAlert(Alerts.RAIN_SOON, setting.isImminentRainNotificationsEnabled() && result.getRain() > 0);
         result.addAlert(Alerts.STORM_SOON, setting.isStormWarningNotificationsEnabled() && willStormNextHour());
         return result;
-    }
-
-    public static boolean hasError() {
-        if (System.currentTimeMillis() - TimeOfLastFetch > 900000) {
-            update();
-        }
-        return error;
     }
 }

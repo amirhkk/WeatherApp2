@@ -19,7 +19,7 @@ public class WarningScreen extends JFrame {
     }
 
     public void refresh() {
-        if (!APIfetcher.hasError()) {
+        if (APIfetcher.establishConnection()) {
             Weather forecast = APIfetcher.getForecast(1, settingScreen);
             Map<Alerts, Boolean> alerts = forecast.getAlerts();
             StringBuilder stringBuilder = new StringBuilder();

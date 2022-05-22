@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Map;
 
 public class MainScreen extends JFrame {
@@ -47,7 +46,18 @@ public class MainScreen extends JFrame {
             dateLabel.setText(dtfDaily.format(currentTime.plusDays(value - 46)));
         }
 
-        if (APIfetcher.hasError()) {
+        if (APIfetcher.establishConnection()) {
+            WeatherRecord<String> weatherRecord = forecast(value);
+
+            actualTempLabel.setText(weatherRecord.actualTemp());
+            feltTempLabel.setText(" " + weatherRecord.feltTemp());
+            setTemperatureDisplay();
+
+            setButtonIcon(warningButton, "Warning");
+            warningButton.setEnabled(true);
+
+            weatherIconLabel.setIcon(getWeatherIcon(weatherRecord.icon()));
+        } else {
             weatherIconLabel.setIcon(getWeatherIcon("Warning"));
 
             warningButton.setIcon(null);
@@ -59,17 +69,6 @@ public class MainScreen extends JFrame {
             actualTextLabel.setVisible(false);
             feltTempLabel.setVisible(false);
             feltTextLabel.setVisible(false);
-        } else {
-            WeatherRecord<String> weatherRecord = forecast(value);
-
-            actualTempLabel.setText(weatherRecord.actualTemp());
-            feltTempLabel.setText(" " + weatherRecord.feltTemp());
-            setTemperatureDisplay();
-
-            setButtonIcon(warningButton, "Warning");
-            warningButton.setEnabled(true);
-
-            weatherIconLabel.setIcon(getWeatherIcon(weatherRecord.icon()));
         }
     }
 
