@@ -23,13 +23,7 @@ public class MainScreen extends JFrame {
         setSize(450, 700);
         this.settingScreen = settingScreen;
 
-        ImageIcon settingsIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/gear.png")
-                .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
-        settingsButton.setIcon(settingsIcon);
-
-        ImageIcon warningIcon = new ImageIcon(new ImageIcon("src/main/java/Icons/Warning.png")
-                .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH));
-        warningButton.setIcon(warningIcon);
+        setButtonIcon(settingsButton, "gear");
 
         this.dtfHourly = DateTimeFormatter.ofPattern("MM/dd HH:00");
         this.dtfDaily = DateTimeFormatter.ofPattern("MM/dd");
@@ -46,12 +40,6 @@ public class MainScreen extends JFrame {
         if (value > 47) {
             value = 47 + (value - 47) / 8;
         }
-        WeatherRecord<String> weatherRecord = forecast(value);
-        actualTempLabel.setText(weatherRecord.actualTemp());
-        feltTempLabel.setText(" " + weatherRecord.feltTemp());
-        setTemperatureDisplay();
-
-        weatherIconLabel.setIcon(getWeatherIcon(weatherRecord.icon()));
 
         LocalDateTime currentTime = LocalDateTime.now();
         if (value < 48) {
@@ -59,11 +47,41 @@ public class MainScreen extends JFrame {
         } else {
             dateLabel.setText(dtfDaily.format(currentTime.plusDays(value - 46)));
         }
+
+        if (APIfetcher.hasError()) {
+            weatherIconLabel.setIcon(getWeatherIcon("Warning"));
+
+            warningButton.setIcon(null);
+            warningButton.setEnabled(false);
+            warningButton.setVisible(true);
+            warningButton.setText("<html>Connection Error!</html>");
+
+            actualTempLabel.setVisible(false);
+            actualTextLabel.setVisible(false);
+            feltTempLabel.setVisible(false);
+            feltTextLabel.setVisible(false);
+        } else {
+            WeatherRecord<String> weatherRecord = forecast(value);
+
+            actualTempLabel.setText(weatherRecord.actualTemp());
+            feltTempLabel.setText(" " + weatherRecord.feltTemp());
+            setTemperatureDisplay();
+
+            setButtonIcon(warningButton, "Warning");
+            warningButton.setEnabled(true);
+
+            weatherIconLabel.setIcon(getWeatherIcon(weatherRecord.icon()));
+        }
     }
 
     private ImageIcon getWeatherIcon(String icon) {
         return new ImageIcon(new ImageIcon("src/main/java/Icons/" + icon + ".png")
                 .getImage().getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
+    }
+
+    private void setButtonIcon(JButton button, String icon) {
+        button.setIcon(new ImageIcon(new ImageIcon("src/main/java/Icons/" + icon + ".png")
+                .getImage().getScaledInstance(40, 40,  java.awt.Image.SCALE_SMOOTH)));
     }
 
     private record WeatherRecord<T>(T actualTemp, T feltTemp, T icon) {}

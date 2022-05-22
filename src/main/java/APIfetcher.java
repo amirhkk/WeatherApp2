@@ -18,6 +18,8 @@ public class APIfetcher {
     private static final DecimalFormat df = new DecimalFormat("0.0");
     // Time of last API call
     private static long TimeOfLastFetch;
+    // Error status
+    private static boolean error;
 
     // Constructor calls update()
     private APIfetcher(){
@@ -36,9 +38,12 @@ public class APIfetcher {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             // Deal with erroneous connection
-            if(connection.getResponseCode() != 200) { // 200 means no error
+            if (connection.getResponseCode() != 200) { // 200 means no error
                 throw new RuntimeException("There is an issue with the API connection :/");
             }
+
+            // Set error to false after checking that the API connection works
+            error = false;
 
             // Convert response to one long String
             String dataAsString = new BufferedReader(new InputStreamReader(url.openStream())).lines().collect(Collectors.joining("\n"));
@@ -48,6 +53,11 @@ public class APIfetcher {
 
             // Remember time of last API call to (later) prevent surpassing call limit
             TimeOfLastFetch = System.currentTimeMillis();
+
+            // Deal with RuntimeException
+        } catch (RuntimeException e) {
+            error = true;
+            e.printStackTrace();
 
             // Deal with IOException
         } catch (IOException e) {
@@ -120,8 +130,8 @@ public class APIfetcher {
     // 1-47: next two days hourly (always full hour, so like 1pm, 2pm etc.)
     // 48-52: next week daily (excluding next 48 hrs) (always gives the temperature for daytime!)
     public static Weather getForecast(int timeIndex, Setting setting) {
-        // Only update every 15 minutes at most
-        if (System.currentTimeMillis() - TimeOfLastFetch > 900000) {
+        // Only update every 15 minutes at most, or if error is currently true
+        if (error || System.currentTimeMillis() - TimeOfLastFetch > 900000) {
             APIfetcher.update();
         }
 
@@ -155,5 +165,9 @@ public class APIfetcher {
         );
         result.addAlert(Alerts.RAIN_SOON, setting.isImminentRainNotificationsEnabled() && result.getRain() > 0);
         return result;
+    }
+
+    public static boolean hasError() {
+        return error;
     }
 }

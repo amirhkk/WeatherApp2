@@ -31,6 +31,7 @@
           </grid>
         </constraints>
         <properties>
+          <editable value="false"/>
           <font name="Arial Black" size="20" style="1"/>
           <lineWrap value="true"/>
           <margin top="0" left="10" bottom="0" right="10"/>
