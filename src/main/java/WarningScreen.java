@@ -41,11 +41,6 @@ public class WarningScreen extends JFrame {
             stringBuilder.append("\nRain (").append(forecast.getRain()).append(" mm/h) within the next hour.\n");
         }
 
-        if (stringBuilder.length() == 0) {
-            stringBuilder.append("\nNo weather warnings.\n");
-            warningTextArea.setForeground(new Color(55, 140, 84));
-        }
-
         warningTextArea.setText(stringBuilder.toString());
     }
 }
