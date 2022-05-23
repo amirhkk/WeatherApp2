@@ -23,9 +23,6 @@ public class Setting extends JFrame {
     private JPanel tempPanel;
     private JPanel precPanel;
     private JTextField maxPrecText;
-    private JToggleButton rainButton;
-    private JPanel rainPanel;
-    private JTextField rainTimeText;
     private JRadioButton fRadioButton;
     private JRadioButton cRadioButton;
     private JLabel formatLabel;
@@ -71,7 +68,6 @@ public class Setting extends JFrame {
     private int extremePrecipitation = 20; // units of mm per hour
     private boolean extremePrecipitationNotificationsEnabled = false;
 
-    private int imminentRainTime = 60; // units of minutes
     private boolean imminentRainNotificationsEnabled = false;
 
     private boolean stormWarningNotificationsEnabled = false;
@@ -91,7 +87,6 @@ public class Setting extends JFrame {
 
         tempButton.addItemListener(e -> tempPanel.setVisible(tempButton.isSelected()));
         precButton.addItemListener(e -> precPanel.setVisible(precButton.isSelected()));
-        rainButton.addItemListener(e -> rainPanel.setVisible(rainButton.isSelected()));
 
         maxTempText.addFocusListener(new FocusAdapter() {
             @Override
@@ -114,14 +109,6 @@ public class Setting extends JFrame {
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
                 setNewExtremePrecipitation(maxPrecText.getText());
-            }
-        });
-
-        rainTimeText.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                super.focusLost(e);
-                setNewImminentRain(rainTimeText.getText());
             }
         });
 
@@ -153,7 +140,6 @@ public class Setting extends JFrame {
 
         tempPanel.setVisible(false);
         precPanel.setVisible(false);
-        rainPanel.setVisible(false);
 
         add(settingPanel);
     }
@@ -174,7 +160,6 @@ public class Setting extends JFrame {
         maxTempText.setText("" + extremeTemperatureHighC);
         minTempText.setText("" + extremeTemperatureLowC);
         maxPrecText.setText("" + extremePrecipitation);
-        rainTimeText.setText("" + imminentRainTime);
     }
 
     private void syncSettingsWithUI() {
@@ -207,9 +192,6 @@ public class Setting extends JFrame {
         }
         if (extremePrecipitation != Integer.parseInt(maxPrecText.getText())) {
             extremePrecipitation = Integer.parseInt(maxPrecText.getText());
-        }
-        if (imminentRainTime != Integer.parseInt(rainTimeText.getText())) {
-            imminentRainTime = Integer.parseInt(rainTimeText.getText());
         }
         // TODO: add checks for temperature units and display temperature types
     }
@@ -293,21 +275,6 @@ public class Setting extends JFrame {
         }
     }
 
-    private void setNewImminentRain(String time) {
-        try {
-            int parsed_time = (int) (Double.parseDouble(time) + 0.5);
-            if (parsed_time < 2) {
-                parsed_time = 2;
-            } else if (parsed_time > 300) {
-                parsed_time = 300;
-            }
-            imminentRainTime = parsed_time;
-            rainTimeText.setText("" + parsed_time);
-        } catch (NumberFormatException e) {
-            rainTimeText.setText("" + imminentRainTime);
-        }
-    }
-
     private void toggleExtremeTemperatureNotifications() {
         extremeTemperatureNotificationEnabled = !extremeTemperatureNotificationEnabled;
     }
@@ -385,9 +352,5 @@ public class Setting extends JFrame {
 
     public int getExtremePrecipitation() {
         return extremePrecipitation;
-    }
-
-    public int getImminentRainTime() {
-        return imminentRainTime;
     }
 }
