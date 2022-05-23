@@ -53,6 +53,7 @@ public class MainScreen extends JFrame {
             feltTempLabel.setText(" " + weatherRecord.feltTemp());
             setTemperatureDisplay();
 
+            setWarningDisplay();
             setButtonIcon(warningButton, "Warning");
             warningButton.setEnabled(true);
 
@@ -86,7 +87,6 @@ public class MainScreen extends JFrame {
 
     private WeatherRecord<String> forecast(int timeIndex) {
         Weather forecast = APIfetcher.getForecast(timeIndex, settingScreen);
-        setWarningDisplay(forecast);
         double actualTemp = forecast.getTemp();
         double feltTemp = forecast.getFelt();
         String unit = "°C";
@@ -98,8 +98,8 @@ public class MainScreen extends JFrame {
         return new WeatherRecord<>(actualTemp + unit, feltTemp + unit, forecast.getIcon());
     }
 
-    private void setWarningDisplay(Weather forecast) {
-        Map<Alerts, Boolean> alerts = forecast.getAlerts();
+    private void setWarningDisplay() {
+        Map<Alerts, Boolean> alerts = APIfetcher.getForecast(1, settingScreen).getAlerts();
         StringBuilder stringBuilder = new StringBuilder();
         if (alerts.get(Alerts.STORM_SOON)) {
             stringBuilder.append("\uD83C\uDF29️");
