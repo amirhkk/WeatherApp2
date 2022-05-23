@@ -1,4 +1,6 @@
-// Enum listing types of alerts
+/**
+ * Enum listing the types of alerts
+ */
 public enum Alerts {
     HIGH_TEMP, // Extreme high temperature
     LOW_TEMP, // Extreme low temperature
