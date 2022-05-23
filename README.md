@@ -2,7 +2,9 @@
 Weather App for **Cambridge (Student) Cyclists**
 
 ## Dependencies
-Maven: com.google.gson:gson:2.9.0
+Requires google/gson library - `Maven: com.google.gson:gson:2.9.0`
+
+Runs on Windows and Mac
 
 ## 1. Choice of tools
 
