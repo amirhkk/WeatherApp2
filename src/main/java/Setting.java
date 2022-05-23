@@ -3,7 +3,11 @@ import javax.swing.text.DateFormatter;
 import java.awt.event.*;
 import java.util.Calendar;
 
+/**
+ * Setting frame class
+ */
 public class Setting extends JFrame {
+    // Swing elements that are bound to the GUI form
     private JLabel notiLabel;
     private JLabel settingLabel;
     private JButton backButton;
@@ -50,6 +54,7 @@ public class Setting extends JFrame {
     private ButtonGroup tempUnitGroup = new ButtonGroup();
     private ButtonGroup displayTempGroup = new ButtonGroup();
 
+    // TEMPERATURE SETTINGS
     final public int CELSIUS = 0;
     final public int FAHRENHEIT = 1;
 
@@ -76,23 +81,29 @@ public class Setting extends JFrame {
     int displayTemperatureTypes = BOTH_TEMPERATURES;
 
     public Setting(RootScreen parent) {
+        // Set size of the screen
         setSize(450, 700);
 
+        // Action listener for back button to go to main screen
         backButton.addActionListener(e -> parent.goMain());
 
+        // Action listeners for notification toggle checkboxes
         tempCheckBox.addActionListener(e -> toggleExtremeTemperatureNotifications());
         precCheckBox.addActionListener(e -> toggleExtremePrecipitationNotifications());
         rainCheckBox.addActionListener(e -> toggleImminentRainNotifications());
         stormCheckBox.addActionListener(e -> toggleStormWarningNotifications());
 
+        // Set checkboxes to be pre-selected
         tempCheckBox.setSelected(extremeTemperatureNotificationEnabled);
         precCheckBox.setSelected(extremePrecipitationNotificationsEnabled);
         rainCheckBox.setSelected(imminentRainNotificationsEnabled);
         stormCheckBox.setSelected(stormWarningNotificationsEnabled);
 
+        // Action listener to display additional options if the button is clicked
         tempButton.addItemListener(e -> tempPanel.setVisible(tempButton.isSelected()));
         precButton.addItemListener(e -> precPanel.setVisible(precButton.isSelected()));
 
+        // Adjust high temperature threshold after focus is lost
         maxTempText.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -101,6 +112,7 @@ public class Setting extends JFrame {
             }
         });
 
+        // Adjust low temperature threshold after focus is lost
         minTempText.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -109,6 +121,7 @@ public class Setting extends JFrame {
             }
         });
 
+        // Adjust precipitation threshold after focus is lost
         maxPrecText.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -117,16 +130,19 @@ public class Setting extends JFrame {
             }
         });
 
+        // Setup temperature unit buttons; celsius as default
         cRadioButton.setSelected(true);
         cRadioButton.addActionListener(e -> toggleTemperatureUnits());
         fRadioButton.addActionListener(e -> toggleTemperatureUnits());
 
+        // Setup temperature display buttons
         actualRadioButton.addActionListener(e -> toggleTemperatureDisplay(ACTUAL_TEMPERATURE));
         feltRadioButton.addActionListener(e -> toggleTemperatureDisplay(FELT_TEMPERATURE));
         bothRadioButton.addActionListener(e -> toggleTemperatureDisplay(BOTH_TEMPERATURES));
 
         setDefaultSettings();
 
+        // Create custom notification time pickers
         createTimePickerSpinner(mondaySpinner);
         createTimePickerSpinner(tuesdaySpinner);
         createTimePickerSpinner(wednesdaySpinner);
@@ -135,6 +151,7 @@ public class Setting extends JFrame {
         createTimePickerSpinner(saturdaySpinner);
         createTimePickerSpinner(sundaySpinner);
 
+        // Add radio buttons to groups
         tempUnitGroup.add(cRadioButton);
         tempUnitGroup.add(fRadioButton);
 
@@ -143,12 +160,17 @@ public class Setting extends JFrame {
         displayTempGroup.add(bothRadioButton);
         bothRadioButton.setSelected(true);
 
+        // Set temperature and precipitation panels to invisible at start
         tempPanel.setVisible(false);
         precPanel.setVisible(false);
 
         add(settingPanel);
     }
 
+    /**
+     * Setup day of the week time picker spinner
+     * @param spinner JSpinner element
+     */
     private void createTimePickerSpinner(JSpinner spinner) {
         SpinnerDateModel model = new SpinnerDateModel();
         model.setCalendarField(Calendar.MINUTE);
@@ -160,6 +182,10 @@ public class Setting extends JFrame {
         formatter.setOverwriteMode(true);
     }
 
+    /**
+     * Set default extreme weather thresholds
+     * Temperature units should be Celsius at default
+     */
     private void setDefaultSettings() {
         assert temperatureUnits == CELSIUS;
         maxTempText.setText("" + extremeTemperatureHighC);
@@ -167,6 +193,9 @@ public class Setting extends JFrame {
         maxPrecText.setText("" + extremePrecipitation);
     }
 
+    /**
+     * Sync settings with what is shown on the UI
+     */
     private void syncSettingsWithUI() {
         if (extremeTemperatureNotificationEnabled != tempCheckBox.isSelected()) {
             extremeTemperatureNotificationEnabled = tempCheckBox.isSelected();
@@ -201,6 +230,13 @@ public class Setting extends JFrame {
         // TODO: add checks for temperature units and display temperature types
     }
 
+    /**
+     * Set the new high temperature threshold
+     * Check if the current temperature units are in Celsius or Fahrenheit
+     * Restrict high temperature to be at least 1 higher than the low temperature
+     * Restrict high temperature threshold to be 35 Celsius at maximum
+     * @param newHigh New high temperature threshold value
+     */
     private void setNewExtremeHighTemperature(String newHigh) {
         if (temperatureUnits == CELSIUS) {
             try {
@@ -233,6 +269,13 @@ public class Setting extends JFrame {
         }
     }
 
+    /**
+     * Set the new low temperature threshold
+     * Check if the current temperature units are in Celsius or Fahrenheit
+     * Restrict high temperature to be at least 1 higher than the low temperature
+     * Restrict low temperature threshold to be -15 Celsius at minimum
+     * @param newLow New low temperature threshold value
+     */
     private void setNewExtremeLowTemperature(String newLow) {
         if (temperatureUnits == CELSIUS) {
             try {
@@ -265,6 +308,11 @@ public class Setting extends JFrame {
         }
     }
 
+    /**
+     * Set the new precipitation threshold
+     * Restrict precipitation to be at minimum 0 mm/h
+     * @param precipitation New precipitation threshold in mm/h
+     */
     private void setNewExtremePrecipitation(String precipitation) {
         try {
             int parsed_precipitation = (int) (Double.parseDouble(precipitation) + 0.5);
@@ -280,22 +328,37 @@ public class Setting extends JFrame {
         }
     }
 
+    /**
+     * Toggle extreme temperature notification setting
+     */
     private void toggleExtremeTemperatureNotifications() {
         extremeTemperatureNotificationEnabled = !extremeTemperatureNotificationEnabled;
     }
 
+    /**
+     * Toggle extreme precipitation notification setting
+     */
     private void toggleExtremePrecipitationNotifications() {
         extremePrecipitationNotificationsEnabled = !extremePrecipitationNotificationsEnabled;
     }
 
+    /**
+     * Toggle imminent rain notification setting
+     */
     private void toggleImminentRainNotifications() {
         imminentRainNotificationsEnabled = !imminentRainNotificationsEnabled;
     }
 
+    /**
+     * Toggle storm warning notification setting
+     */
     private void toggleStormWarningNotifications() {
         stormWarningNotificationsEnabled = !stormWarningNotificationsEnabled;
     }
 
+    /**
+     * Toggle temperature units and set temperature text to the correct format
+     */
     private void toggleTemperatureUnits() {
         temperatureUnits = 1 - temperatureUnits;
         if (temperatureUnits == CELSIUS) {
@@ -307,6 +370,10 @@ public class Setting extends JFrame {
         }
     }
 
+    /**
+     * Change temperature display setting based on the settingID
+     * @param settingID ACTUAL_TEMPERATURE, FELT_TEMPERATURE, or BOTH_TEMPERATURES
+     */
     private void toggleTemperatureDisplay(int settingID) {
         if (settingID == ACTUAL_TEMPERATURE) {
             displayTemperatureTypes = ACTUAL_TEMPERATURE;
@@ -319,42 +386,73 @@ public class Setting extends JFrame {
         }
     }
 
+    /**
+     * Gives the panel of the setting screen
+     * @return settingPanel
+     */
     public JPanel getSettingPanel() {
         return settingPanel;
     }
 
+    /**
+     * @return temperature units (celsius or fahrenheit)
+     */
     public int getTemperatureUnits() {
         return temperatureUnits;
     }
 
+    /**
+     * @return display temperature types (actual, felt, or both)
+     */
     public int getDisplayTemperatureTypes() {
         return displayTemperatureTypes;
     }
 
+    /**
+     * @return whether extreme temperature notifications are enabled
+     */
     public boolean isExtremeTemperatureNotificationEnabled() {
         return extremeTemperatureNotificationEnabled;
     }
 
+    /**
+     * @return whether extreme precipitation notifications are enabled
+     */
     public boolean isExtremePrecipitationNotificationsEnabled() {
         return extremePrecipitationNotificationsEnabled;
     }
 
+    /**
+     * @return whether imminent rain notifications are enabled
+     */
     public boolean isImminentRainNotificationsEnabled() {
         return imminentRainNotificationsEnabled;
     }
 
+    /**
+     * @return whether storm warning notifications are enabled
+     */
     public boolean isStormWarningNotificationsEnabled() {
         return stormWarningNotificationsEnabled;
     }
 
+    /**
+     * @return the high temperature threshold in celsius
+     */
     public int getExtremeTemperatureHigh() {
         return extremeTemperatureHighC;
     }
 
+    /**
+     * @return the low temperature threshold in celsius
+     */
     public int getExtremeTemperatureLow() {
         return extremeTemperatureLowC;
     }
 
+    /**
+     * @return the extreme precipitation threshold in mm/h
+     */
     public int getExtremePrecipitation() {
         return extremePrecipitation;
     }
