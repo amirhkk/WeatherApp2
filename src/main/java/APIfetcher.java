@@ -125,7 +125,7 @@ public class APIfetcher {
 
     private static boolean willStormNextHour() {
         int weatherId = json.getAsJsonArray("hourly").get(1).getAsJsonObject().getAsJsonArray("weather").get(0).getAsJsonObject().get("id").getAsInt();
-        return weatherId % 100 == 2; // Thunderstorm codes are 2XX
+        return (weatherId / 100) % 100 == 2; // Thunderstorm codes are 2XX
     }
 
     public static boolean establishConnection() {

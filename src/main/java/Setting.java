@@ -63,14 +63,14 @@ public class Setting extends JFrame {
     private int extremeTemperatureHighF = 86; // units of Fahrenheit
     private int extremeTemperatureLowF = 32; // units of Fahrenheit
     private int temperatureUnits = CELSIUS; // controls temperature units setting
-    private boolean extremeTemperatureNotificationEnabled = false;
+    private boolean extremeTemperatureNotificationEnabled = true;
 
     private int extremePrecipitation = 20; // units of mm per hour
-    private boolean extremePrecipitationNotificationsEnabled = false;
+    private boolean extremePrecipitationNotificationsEnabled = true;
 
-    private boolean imminentRainNotificationsEnabled = false;
+    private boolean imminentRainNotificationsEnabled = true;
 
-    private boolean stormWarningNotificationsEnabled = false;
+    private boolean stormWarningNotificationsEnabled = true;
 
     // DISPLAY SETTINGS
     int displayTemperatureTypes = BOTH_TEMPERATURES;
@@ -84,6 +84,11 @@ public class Setting extends JFrame {
         precCheckBox.addActionListener(e -> toggleExtremePrecipitationNotifications());
         rainCheckBox.addActionListener(e -> toggleImminentRainNotifications());
         stormCheckBox.addActionListener(e -> toggleStormWarningNotifications());
+
+        tempCheckBox.setSelected(extremeTemperatureNotificationEnabled);
+        precCheckBox.setSelected(extremePrecipitationNotificationsEnabled);
+        rainCheckBox.setSelected(imminentRainNotificationsEnabled);
+        stormCheckBox.setSelected(stormWarningNotificationsEnabled);
 
         tempButton.addItemListener(e -> tempPanel.setVisible(tempButton.isSelected()));
         precButton.addItemListener(e -> precPanel.setVisible(precButton.isSelected()));
