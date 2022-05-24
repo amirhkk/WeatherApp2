@@ -80,6 +80,10 @@ public class Setting extends JFrame {
     // DISPLAY SETTINGS
     int displayTemperatureTypes = BOTH_TEMPERATURES;
 
+    /**
+     * Constructor for the settings frame object
+     * @param parent frame from to return to on exit
+     */
     public Setting(RootScreen parent) {
         // Set size of the screen
         setSize(450, 700);
@@ -227,14 +231,13 @@ public class Setting extends JFrame {
         if (extremePrecipitation != Integer.parseInt(maxPrecText.getText())) {
             extremePrecipitation = Integer.parseInt(maxPrecText.getText());
         }
-        // TODO: add checks for temperature units and display temperature types
     }
 
     /**
      * Set the new high temperature threshold
      * Check if the current temperature units are in Celsius or Fahrenheit
      * Restrict high temperature to be at least 1 higher than the low temperature
-     * Restrict high temperature threshold to be 35 Celsius at maximum
+     * Restrict high temperature threshold to be 35 Celsius (95 Fahrenheit) at maximum
      * @param newHigh New high temperature threshold value
      */
     private void setNewExtremeHighTemperature(String newHigh) {
@@ -272,8 +275,8 @@ public class Setting extends JFrame {
     /**
      * Set the new low temperature threshold
      * Check if the current temperature units are in Celsius or Fahrenheit
-     * Restrict high temperature to be at least 1 higher than the low temperature
-     * Restrict low temperature threshold to be -15 Celsius at minimum
+     * Restrict low temperature to be at least 1 lower than the high temperature
+     * Restrict low temperature threshold to be -15 Celsius (5 Fahrenheit) at minimum
      * @param newLow New low temperature threshold value
      */
     private void setNewExtremeLowTemperature(String newLow) {
@@ -310,14 +313,14 @@ public class Setting extends JFrame {
 
     /**
      * Set the new precipitation threshold
-     * Restrict precipitation to be at minimum 0 mm/h
+     * Restrict precipitation to be at minimum 1 mm/h and at maximum 60 mm/h
      * @param precipitation New precipitation threshold in mm/h
      */
     private void setNewExtremePrecipitation(String precipitation) {
         try {
             int parsed_precipitation = (int) (Double.parseDouble(precipitation) + 0.5);
             if (parsed_precipitation < 1) {
-                parsed_precipitation = 0;
+                parsed_precipitation = 1;
             } else if (parsed_precipitation > 60) {
                 parsed_precipitation = 60;
             }
