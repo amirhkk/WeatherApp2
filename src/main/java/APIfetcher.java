@@ -137,11 +137,11 @@ public class APIfetcher {
      * @return the amount of rain (mm/h) in the next hour
      */
     private static Double getRainNextHour(){
-        JsonElement rainInMM = json.getAsJsonArray("hourly").get(1).getAsJsonObject().get("rain").getAsJsonObject().get("1h");
+        JsonElement rainInMM = json.getAsJsonArray("hourly").get(1).getAsJsonObject().get("rain");
         if (rainInMM == null) { // rain field will only exist if there is rain!
             return 0.0;
         }
-        return rainInMM.getAsDouble();
+        return rainInMM.getAsJsonObject().get("1h").getAsDouble();
     }
 
     /**
