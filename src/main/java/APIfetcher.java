@@ -138,7 +138,6 @@ public class APIfetcher {
      */
     private static Double getRainNextHour(){
         JsonElement rainInMM = json.getAsJsonArray("hourly").get(1).getAsJsonObject().get("rain").getAsJsonObject().get("1h");
-        System.out.println(rainInMM);
         if (rainInMM == null) { // rain field will only exist if there is rain!
             return 0.0;
         }
