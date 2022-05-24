@@ -68,7 +68,7 @@
           <font name="Courier" size="20" style="1"/>
           <foreground color="-16400640"/>
           <inverted value="false"/>
-          <maximum value="87"/>
+          <maximum value="79"/>
           <minimum value="0"/>
           <paintLabels value="false"/>
           <value value="0"/>

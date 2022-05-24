@@ -51,7 +51,7 @@ public class MainScreen extends JFrame {
     public void refresh() {
         // Gets the value of the date slider, and adjusts values 0-87 -> 0-52
         // 0-47: hours from current
-        // 48-87: adjusted to become 47-52, which is equivalent to 2-7 days from current
+        // 48-79: adjusted to become 48-52, which is equivalent to 2-7 days from current
         int value = dateSlider.getValue();
         if (value > 47) {
             value = 48 + (value - 47) / 8;
