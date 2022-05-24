@@ -134,22 +134,11 @@ public class APIfetcher {
     }
 
     /**
-     * @param day number of days from current (0-7)
-     * @return the amount of rain (mm/h) on the specified day
-     */
-    public static Double getRainAtDay(int day){
-        JsonElement rainInMM = json.getAsJsonArray("daily").get(day).getAsJsonObject().get("rain");
-        if (rainInMM == null) { // rain field will only exist if there is rain!
-            return 0.0;
-        }
-        return rainInMM.getAsDouble();
-    }
-
-    /**
      * @return the amount of rain (mm/h) in the next hour
      */
     private static Double getRainNextHour(){
-        JsonElement rainInMM = json.getAsJsonArray("hourly").get(1).getAsJsonObject().get("rain");
+        JsonElement rainInMM = json.getAsJsonArray("hourly").get(1).getAsJsonObject().get("rain").getAsJsonObject().get("1h");
+        System.out.println(rainInMM);
         if (rainInMM == null) { // rain field will only exist if there is rain!
             return 0.0;
         }
