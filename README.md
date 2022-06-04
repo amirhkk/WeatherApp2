@@ -1,4 +1,4 @@
-# WeatherApp2
+# WeatherApp
 Weather App for **Cambridge (Student) Cyclists**
 
 ## Dependencies
